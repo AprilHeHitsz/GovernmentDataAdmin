@@ -19,7 +19,7 @@
                     <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="{% url 'user:edit' user.id %}"><i class="fa fa-edit"></i> 个人主页
                         </a>
-                        <a class="dropdown-item" href="javascript:;"><i class="fa fa-list-ul"></i> 帮助</a>
+                        <a class="dropdown-item" href="{% url 'user:permissionApply' %}"><i class="fa fa-list-ul"></i> 帮助</a>
                         <a class="dropdown-item" href="{% url 'user:logout' %}"><i
                                 class="fa fa-sign-out pull-right"></i> 退出登录</a>
                     </div>
