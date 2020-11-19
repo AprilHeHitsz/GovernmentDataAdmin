@@ -1,129 +1,144 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-<div class="row">
-    <div class="col-md-2 col-sm-3 col-xs-6 pull-right">
-        <select datatype="text" class="form-control pull-right row b-none" name="street" id="id_street" onchange="Filter('street')">
-            <option value="">街道</option>
-            {% for street in streets %}
-                <option value="{{ street }}" name="{{ street }}">{{ street }}</option>
-            {% endfor %}
-        </select>
-    </div>
-    <div class="col-md-2 col-sm-3 col-xs-6 pull-right">
-        <select datatype="text" class="form-control pull-right row b-none" name="community" id="id_community" onchange="Filter('community')">
-            <option value="">社区</option>
-            {% for community in communities %}
-                <option value="{{ community }}" name="{{ community }}">{{ community }}</option>
-            {% endfor %}
-        </select>
-    </div>
-    <div class="col-md-1 col-sm-3 col-xs-6 pull-right">
-        <select datatype="text" class="form-control pull-right row b-none" name="property" id="id_property" onchange="Filter('property')">
-            <option value="">性质</option>
-            {% for pro in properties %}
-                <option value="{{ pro }}" name="{{ pro }}">{{ pro }}</option>
-            {% endfor %}
-        </select>
-    </div>
-    <div class="col-md-1 col-sm-3 col-xs-6 pull-right">
-        <select datatype="text" class="form-control pull-right row b-none" name="event_type" id="id_event_type" onchange="Filter('type')">
-            <option value="">类型</option>
-            {% for type in types %}
-                <option name="{{ type }}" value="{{ type }}">{{ type }}</option>
-            {% endfor %}
-        </select>
-    </div>
-    <div class="col-md-2 col-sm-3 col-xs-6 pull-right">
-        <select datatype="text" class="form-control pull-right row b-none" name="main_type" id="id_main_type" onchange="Filter('maintype')">
-            <option value="">大类</option>
-            {% for maintype in maintypes %}
-                <option value="{{ maintype }}" name="{{ maintype }}">{{ maintype }}</option>
-            {% endfor %}
-        </select>
-    </div>
-    <div class="col-md-1 col-sm-3 col-xs-6 pull-right">
-        <select datatype="text" class="form-control pull-right row b-none" name="source" id="id_source" onchange="Filter('source')">
-            <option value="">来源</option>
-            {% for source in src %}
-                <option value="{{ source }}" name="{{ source }}">{{ source }}</option>
-            {% endfor %}
-        </select>
-    </div>
-    <div class="col-md-1 col-sm-3 col-xs-5 pull-right">
-        <select datatype="text" class="form-control pull-right row b-none" name="status" id="id_status" onchange="Filter('status')">
-            <option value="">状态</option>
-            <option name="处理中" value="处理中">处理中</option>
-            <option name="按期办结" value="按期办结">按期</option>
-            <option name="逾期办结" value="逾期办结">逾期</option>
-        </select>
-    </div>
-    <div class="table-responsive">
-        <table class="table" style="font-family:'微软雅黑';font-size: 20px;font-weight: bold">
-            <thead>
-                <tr>
-                    <th class="sorting" tabindex="0" rowspan="1" colspan="1" style="font-family: 微软雅黑;font-size: 25px">序号</th>
-                    <th style="font-family: 微软雅黑;font-size: 25px">统计时间</th>
-                    <th style="font-family: 微软雅黑;font-size: 25px">所属街道和社区</th>
-                    <th  style="font-family: 微软雅黑;font-size: 25px">问题性质</th>
-                    <th style="font-family: 微软雅黑;font-size: 25px">问题类型</th>
-                    <th style="font-family: 微软雅黑;font-size: 25px">问题大类</th>
-                    <th style="font-family: 微软雅黑;font-size: 25px">问题小类</th>
-                    <th style="font-family: 微软雅黑;font-size: 25px">问题来源</th>
-                    <th style="font-family: 微软雅黑;font-size: 25px">处置状态</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for event in event_list %}
-                    <tr class="event" id="{{ event.rec_id }}">
-                        <td>{{ event.rec_id }}</td>
-                        <td>{{ event.create_time }}</td>
-                        <td>{{ event.community.street }} {{ event.community }}</td>
-                        <td>{{ event.property }}</td>
-                        <td>{{ event.sub_type.main_type.type }}</td>
-                        <td>{{ event.sub_type.main_type }}</td>
-                        <td>{{ event.sub_type }}</td>
-                        <td>{{ event.event_src }}</td>
-                        {% if event.achieve.status == 'intime_to' %}
-                            <td class="achieve"><span class="status-icon bg-primary"></span>处理中</td>
-                            {% if flag %}
-                            <td class="status"><button class="btn btn-info btn-sm" onclick="dispose('intime', '{{ event.rec_id }}', '{{ user.username }}')">按期</button>&nbsp;&nbsp;<button class="btn btn-danger btn-sm" onclick="dispose('overtime', '{{ event.rec_id }}', '{{ user.username }}')"><i class="ti-close text-danger m-r-5"></i>逾期</button></td>
-                            {% endif %}
-                        {% elif event.achieve.status == 'intime' %}
-                            <td class><span class="status-icon bg-success"></span>按期办结</td>
-                            <td></td>
-                        {% elif event.achieve.status == 'overtime' %}
-                            <td><span class="status-icon bg-danger"></span>逾期办结</td>
-                            <td></td>
-                        {% endif %}
-                    </tr>
+<div class="x_panel">
+    <div class="x_title">
+        <h2>事件列表 <small></small></h2>
+        <ul class="nav navbar-right panel_toolbox">
+          <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+          </li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+          </li>
+          <li><a class="close-link"><i class="fa fa-close"></i></a>
+          </li>
+        </ul>
+        <div class="clearfix"></div>
+  </div>
+    <div class="row">
+        <div class="col-md-2 col-sm-3 col-xs-6 pull-right">
+            <select datatype="text" class="form-control pull-right row b-none" name="street" id="id_street" onchange="Filter('street')">
+                <option value="">街道</option>
+                {% for street in streets %}
+                    <option value="{{ street }}" name="{{ street }}">{{ street }}</option>
                 {% endfor %}
-            </tbody>
-        </table>
-        <nav>
-            <ul class="pagination">
-                {% if event_list.has_previous %}
-                    <li class="page-item">
-                        <a class="page-link" href="?page=1{{ url }}" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                            <span class="sr-only">Previous</span>
-                        </a>
-                    </li>
-                    <li class="page-item"><a class="page-link" href="?page={{ event_list.previous_page_number }}{{ url }}">{{ event_list.previous_page_number }}</a></li>
-                {% endif %}
-                <li class="page-item active"><a class="page-link" href="#">{{ event_list.number }}</a></li>
+            </select>
+        </div>
+        <div class="col-md-2 col-sm-3 col-xs-6 pull-right">
+            <select datatype="text" class="form-control pull-right row b-none" name="community" id="id_community" onchange="Filter('community')">
+                <option value="">社区</option>
+                {% for community in communities %}
+                    <option value="{{ community }}" name="{{ community }}">{{ community }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-1 col-sm-3 col-xs-6 pull-right">
+            <select datatype="text" class="form-control pull-right row b-none" name="property" id="id_property" onchange="Filter('property')">
+                <option value="">性质</option>
+                {% for pro in properties %}
+                    <option value="{{ pro }}" name="{{ pro }}">{{ pro }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-1 col-sm-3 col-xs-6 pull-right">
+            <select datatype="text" class="form-control pull-right row b-none" name="event_type" id="id_event_type" onchange="Filter('type')">
+                <option value="">类型</option>
+                {% for type in types %}
+                    <option name="{{ type }}" value="{{ type }}">{{ type }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-2 col-sm-3 col-xs-6 pull-right">
+            <select datatype="text" class="form-control pull-right row b-none" name="main_type" id="id_main_type" onchange="Filter('maintype')">
+                <option value="">大类</option>
+                {% for maintype in maintypes %}
+                    <option value="{{ maintype }}" name="{{ maintype }}">{{ maintype }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-1 col-sm-3 col-xs-6 pull-right">
+            <select datatype="text" class="form-control pull-right row b-none" name="source" id="id_source" onchange="Filter('source')">
+                <option value="">来源</option>
+                {% for source in src %}
+                    <option value="{{ source }}" name="{{ source }}">{{ source }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-1 col-sm-3 col-xs-5 pull-right">
+            <select datatype="text" class="form-control pull-right row b-none" name="status" id="id_status" onchange="Filter('status')">
+                <option value="">状态</option>
+                <option name="处理中" value="处理中">处理中</option>
+                <option name="按期办结" value="按期办结">按期</option>
+                <option name="逾期办结" value="逾期办结">逾期</option>
+            </select>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th class="sorting" tabindex="0" rowspan="1" colspan="1" style="font-family: 微软雅黑;font-size: 25px">序号</th>
+                        <th style="font-family: 微软雅黑;font-size: 25px">统计时间</th>
+                        <th style="font-family: 微软雅黑;font-size: 25px">所属街道和社区</th>
+                        <th  style="font-family: 微软雅黑;font-size: 25px">问题性质</th>
+                        <th style="font-family: 微软雅黑;font-size: 25px">问题类型</th>
+                        <th style="font-family: 微软雅黑;font-size: 25px">问题大类</th>
+                        <th style="font-family: 微软雅黑;font-size: 25px">问题小类</th>
+                        <th style="font-family: 微软雅黑;font-size: 25px">问题来源</th>
+                        <th style="font-family: 微软雅黑;font-size: 25px">处置状态</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for event in event_list %}
+                        <tr class="event" id="{{ event.rec_id }}">
+                            <td>{{ event.rec_id }}</td>
+                            <td>{{ event.create_time }}</td>
+                            <td>{{ event.community.street }} {{ event.community }}</td>
+                            <td>{{ event.property }}</td>
+                            <td>{{ event.sub_type.main_type.type }}</td>
+                            <td>{{ event.sub_type.main_type }}</td>
+                            <td>{{ event.sub_type }}</td>
+                            <td>{{ event.event_src }}</td>
+                            {% if event.achieve.status == 'intime_to' %}
+                                <td class="achieve"><span class="status-icon bg-primary"></span>处理中</td>
+                                {% if flag %}
+                                <td class="status"><button class="btn btn-info btn-sm" onclick="dispose('intime', '{{ event.rec_id }}', '{{ user.username }}')">按期</button>&nbsp;&nbsp;<button class="btn btn-danger btn-sm" onclick="dispose('overtime', '{{ event.rec_id }}', '{{ user.username }}')"><i class="ti-close text-danger m-r-5"></i>逾期</button></td>
+                                {% endif %}
+                            {% elif event.achieve.status == 'intime' %}
+                                <td class><span class="status-icon bg-success"></span>按期办结</td>
+                                <td></td>
+                            {% elif event.achieve.status == 'overtime' %}
+                                <td><span class="status-icon bg-danger"></span>逾期办结</td>
+                                <td></td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <nav>
+                <ul class="pagination">
+                    {% if event_list.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page=1{{ url }}" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                        </li>
+                        <li class="page-item"><a class="page-link" href="?page={{ event_list.previous_page_number }}{{ url }}">{{ event_list.previous_page_number }}</a></li>
+                    {% endif %}
+                    <li class="page-item active"><a class="page-link" href="#">{{ event_list.number }}</a></li>
 
-                {% if event_list.has_next %}
-                    <li class="page-item"><a class="page-link" href="?page={{ event_list.next_page_number }}{{ url }}">{{ event_list.next_page_number }}</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="?page={{ event_list.paginator.num_pages }}{{ url }}" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                            <span class="sr-only">Next</span>
-                        </a>
-                    </li>
-                {% endif %}
-            </ul>
-        </nav>
+                    {% if event_list.has_next %}
+                        <li class="page-item"><a class="page-link" href="?page={{ event_list.next_page_number }}{{ url }}">{{ event_list.next_page_number }}</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ event_list.paginator.num_pages }}{{ url }}" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
     </div>
 </div>
 {% endblock content %}
