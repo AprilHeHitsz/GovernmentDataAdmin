@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 
+
 # 事件来源
 class EventSource(models.Model):
     name = models.CharField(max_length=100)
