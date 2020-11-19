@@ -5,41 +5,143 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-6 col-xl-6">
-                <div class="card" style="background-color:rgba(255,255,255,0.5)">
-                    <div class="card-header">
-                        <h3 class="card-title">PIE</h3>
+                <div class="x_panel">
+                    <div class="x_title">
+                        <div class="col-sm-2">
+                            <h2 class="card-title">事件种类</h2>
+                        </div>
+                        <div class="col-sm-5"></div>
+                        <div class="col-sm-3" style="width: 90px">
+                            <div style="height: 8px"></div>
+                            <h6>选择街道</h6>
+                        </div>
+                        <div class="col-sm-3">
+                            <select datatype="text" class="form-control form-control-line" name="property" id="pie-street">
+                                {% for street in streets %}
+                                    <option value={{ street.name }}>{{ street.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="clearfix"></div>
                     </div>
                     <div class="card-body">
                         <div id="pie" class="chart-container" style="height: 500px;"></div>
-                        <script>
+                        <script type="text/javascript">
                             let pie_chart = echarts.init(
-                                document.getElementById('pie'), 'white', {renderer: 'canvas'}
+                                document.getElementById('pie'), 'walden', {renderer: 'canvas'},
                             );
                             pie_chart.setOption({{ pie_chart | safe}});
+                            $("#pie-street").change(function (){
+                                let pie_choice = document.getElementById("pie-street").value;
+                                $.ajax({
+                                    url: "data/pie",
+                                    type: "get",
+                                    dataType : "json",
+                                    data: {"pie-choice": pie_choice,},
+                                    success: (data) => {
+                                        console.log(data)
+                                        pie_chart.setOption(data);
+                                    }
+                                });
+                            });
                         </script>
                     </div>
                 </div>
             </div>
             <div class="col-lg-6 col-xl-6">
-                <div class="card" style="background-color:rgba(255,255,255,0.5)">
-                    <div class="card-header">
-                        <h3 class="card-title">Sunburst</h3>
+                <div class="x_panel">
+                    <div class="x_title">
+                        <div class="col-sm-2">
+                            <h2 class="card-title">完成情况</h2>
+                        </div>
+                        <div class="col-sm-5"></div>
+                        <div class="col-sm-2">
+                            <div style="height: 8px"></div>
+                            <h6>选择街道</h6>
+                        </div>
+                        <div class="col-sm-3">
+                            <select datatype="text" class="form-control form-control-line " name="property" id="sun-street">
+                                {% for street in streets %}
+                                    <option value={{ street.name }}>{{ street.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="clearfix"></div>
                     </div>
                     <div class="card-body">
                         <div id="sunburst" class="chart-container" style="height: 500px;"></div>
                         <script>
                             let sunburst_chart = echarts.init(
-                                document.getElementById('sunburst'), 'white', {renderer: 'canvas'}
+                                document.getElementById('sunburst'), 'walden', {renderer: 'canvas'}
                             );
                             sunburst_chart.setOption({{ sunburst_chart | safe}});
+                            $("#sun-street").change(function (){
+                                let sun_choice = document.getElementById("sun-street").value;
+                                $.ajax({
+                                    url: "data/sun",
+                                    type: "get",
+                                    dataType : "json",
+                                    data: {"sun-choice": sun_choice,},
+                                    success: (data) => {
+                                        console.log(data)
+                                        sunburst_chart.setOption(data);
+                                    }
+                                });
+                            });
                         </script>
                     </div>
                 </div>
             </div>
             <div class="col-lg-6 col-xl-12">
-                <div class="card" style="background-color:rgba(255,255,255,0.5)">
-                    <div class="card-header">
-                        <h3 class="card-title">Calendar</h3>
+                <div class="x_panel">
+                    <div class="x_title">
+                        <div class="col-sm-2">
+                            <h2 class="card-title">超时完成情况</h2>
+                        </div>
+<!--                        <div class="col-sm-6"></div>-->
+<!--                        <div class="col-sm-1">-->
+<!--                            <div style="height: 8px"></div>-->
+<!--                            <h6>选择街道</h6>-->
+<!--                        </div>-->
+<!--                        <div class="col-sm-3">-->
+<!--                            <select datatype="text" class="form-control form-control-line funnel-street-chart" name="property" id="id_property">-->
+<!--                                {% for street in streets %}-->
+<!--                                    <option value={{ street.name }}>{{ street.name }}</option>-->
+<!--                                {% endfor %}-->
+<!--                            </select>-->
+<!--                        </div>-->
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="card-body">
+                        <div id="funnel" class="chart-container" style="height: 500px;"></div>
+                        <script>
+                            let funnel_chart = echarts.init(
+                                document.getElementById('funnel'), 'walden', {renderer: 'canvas'}
+                            );
+                            funnel_chart.setOption({{ funnel_chart | safe}});
+                        </script>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-xl-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <div class="col-sm-2">
+                            <h2 class="card-title">事件日历图</h2>
+                        </div>
+                        <div class="col-sm-6"></div>
+                        <div class="col-sm-1">
+                            <div style="height: 8px"></div>
+                            <h6>选择类型</h6>
+                        </div>
+                        <div class="col-sm-3">
+                            <select datatype="text" class="form-control form-control-line" name="property" id="calendar-property">
+                                {% for property in properties %}
+                                    <option value={{ property.name }}>{{ property.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="clearfix"></div>
                     </div>
                     <div class="card-body">
                         <div id="calendar" class="chart-container" style="height: 300px;"></div>
@@ -48,20 +150,43 @@
                                 document.getElementById('calendar'), 'white', {renderer: 'canvas'}
                             );
                             calendar_chart.setOption({{ calendar_chart | safe}});
+                            $("#calendar-property").change(function (){
+                                let calender_choice = document.getElementById("calendar-property").value;
+                                $.ajax({
+                                    url: "data/calender",
+                                    type: "get",
+                                    dataType : "json",
+                                    data: {"calender-choice": calender_choice,},
+                                    success: (data) => {
+                                        console.log(data)
+                                        calendar_chart.setOption(data);
+                                    }
+                                });
+                            });
                         </script>
                     </div>
                 </div>
             </div>
             <div class="col-lg-6 col-xl-12">
-                <div class="card" style="background-color:rgba(255,255,255,0.5)">
-                    <div class="card-header">
-                        <h3 class="card-title">Bar</h3>
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>各部门完成情况 <small></small></h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                          <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                          </li>
+                          <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                          </li>
+                          <li><a class="close-link"><i class="fa fa-close"></i></a>
+                          </li>
+                        </ul>
+                        <div class="clearfix"></div>
                     </div>
                     <div class="card-body">
                         <div id="bar" class="chart-container" style="height: 600px;"></div>
                         <script>
                             let bar_chart = echarts.init(
-                                document.getElementById('bar'), 'white', {renderer: 'canvas'}
+                                document.getElementById('bar'), 'light', {renderer: 'canvas'}
                             );
                             bar_chart.setOption({{ bar_chart | safe}});
                         </script>
@@ -69,9 +194,19 @@
                 </div>
             </div>
             <div class="col-lg-6 col-xl-12">
-                <div class="card" style="background-color:rgba(255,255,255,0.5)">
-                    <div class="card-header">
-                        <h3 class="card-title">Map</h3>
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>热点地区图 <small></small></h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                          <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                          </li>
+                          <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                          </li>
+                          <li><a class="close-link"><i class="fa fa-close"></i></a>
+                          </li>
+                        </ul>
+                        <div class="clearfix"></div>
                     </div>
                     <div class="card-body">
                         <div id="map" class="chart-container" style="height: 500px;"></div>
