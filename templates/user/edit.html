@@ -1,182 +1,477 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-<div class="my-3 my-md-5">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-4">
-                <div class="card card-profile">
-                    <div class="card-header" style="background-image: url({% static 'assets/images/profile-back.jpg' %});"></div>
-                    <div class="card-body text-center">
-                        {% if profile.avatar %}
-                        <img class="card-profile-img" src="{{ profile.avatar.url }}" alt="avatar">
-                        {% else %}
-                        <img class="card-profile-img" src="{% static 'assets/images/admin.png' %}" alt="profile-background">
-                        {% endif %}
-                        <h3 class="mb-3">{{ profile.user.username }}</h3>
-                        <h4 class="mb-3">{{ profile.user.email }}</h4>
-                        {% if user.is_superuser %}
-                        <h4 class="mb-3">超管</h4>
-                        {% elif profile.is_disposer %}
-                        <h4 class="mb-3">处理员</h4>
-                        <h5 class="mb-3">{{ profile.unit }}</h5>
-                        {% elif profile.is_poster %}
-                        <h4 class="mb-3">上传员</h4>
-                        <h5 class="mb-3">{{ profile.unit }}</h5>
-                        {% else %}
-                        <h4 class="mb-3">游客</h4>
-                        {% endif %}
-                        <p class="mb-4">{{ profile.bio }}</p>
-                    </div>
-                </div>
-                <form class="card" method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                    <div class="card-body">
-                    <h3 class="card-title">编辑资料</h3>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="form-label" for="username">姓名</label>
-                                <div class="input-icon">
-                                    <span class="input-icon-addon">
-                                        <i class="fe fe-user"></i>
-                                    </span>
-                                    <input type="text" class="form-control" value="{{ profile.user.username }}" id="username" name="username">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="form-label" for="avatar">头像</label>
-                                <div class="custom-file">
-                                    <input type="file" class="custom-file-input" name="avatar" id="avatar" {% if profile.avatar %} value="{{ user.profile.avatar.url }}" {% endif %}>
-                                    <label class="custom-file-label">选择图片</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-12">
-                            <div class="form-group">
-                                <label class="form-label" for="email">电子邮箱</label>
-                                <div class="input-icon">
-                                    <span class="input-icon-addon">
-                                        <i class="fe fe-mail"></i>
-                                    </span>
-                                    <input type="email" class="form-control" value="{{ profile.user.email }}" id="email" name="email">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-12">
-                            <div class="form-group">
-                                <label class="form-label" for="phone">电话号码</label>
-                                <div class="input-icon">
-                                    <span class="input-icon-addon">
-                                        <i class="fe fe-phone"></i>
-                                    </span>
-                                    <input type="text" class="form-control" value="{{ profile.phone }}" id="phone" name="phone">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group mb-0">
-                                <label class="form-label" for="bio">关于我</label>
-                                <textarea rows="5" class="form-control" id="bio" name="bio">{{ profile.bio }}</textarea>
-                            </div>
-                        </div>
-                    </div>
-                    </div>
-                    <div class="card-footer text-right">
-                        <button class="btn btn-primary">更新信息</button>
-                    </div>
-                </form>
-            </div>
-            <div class="col-lg-8">
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">通知列表</h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="container">
-                            <!-- 未读通知列表 -->
-                            <div class="row mt-2 ml-4">
-                                <ul class="list-group">
-                                    {% for notice in notices %}
-                                        <li class="list-group-item" id="notice_link">
-                                            <span style="color: #5897fb;">
-                                                {{ notice.actor }}
-                                            </span>
-                                                {{ notice.verb }}。
-                                            {{ notice.timestamp|date:"Y/m/d H:i" }}
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
-                            <div class="row mt-4 ml-4">
-                                <a href="{% url "notice:update" %}" class="btn btn-warning" role="button">清空所有通知</a>
-                            </div>
-                        </div>
-                </div>
-            </div>
-            {% if profile.is_disposer or user.is_superuser %}
-            <div class="col-md-6 col-xl-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">最近处理事件</h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="container">
-                            <div class="row mt-2 ml-4">
-                                <ul class="list-group">
-                                    {% for dispose_event in dispose_events %}
-                                        <li class="list-group-item">
-                                            编号为
-                                            <span style="color: #5897fb;">
-                                                {{ dispose_event.rec_id }}
-                                            </span>
-                                                ：{{ dispose_event.create_time }}于{{ dispose_event.community }}发生的{{ dispose_event.sub_type }}事件
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
-                        </div>
-                </div>
-            </div>
-            {% endif %}
-            {% if profile.is_poster or user.is_superuser %}
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">最近上传事件</h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="container">
-                            <div class="row mt-2 ml-4">
-                                <ul class="list-group">
-                                    {% for post_event in post_events %}
-                                        <li class="list-group-item">
-                                            编号为
-                                            <span style="color: #5897fb;">
-                                                {{ post_event.rec_id }}
-                                            </span>
-                                                ：{{ post_event.create_time }}于{{ post_event.community }}发生的{{ post_event.sub_type }}事件
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
-                        </div>
-                </div>
-            </div>
-            {% endif %}
+<!--<div class="my-3 my-md-5">-->
+<!--    <div class="container">-->
+<!--        <div class="row">-->
+<!--            <div class="col-lg-4">-->
+<!--                <div class="card card-profile">-->
+<!--                    <div class="card-header" style="background-image: url({% static 'assets/images/profile-back.jpg' %});"></div>-->
+<!--                    <div class="card-body text-center">-->
+<!--                        {% if profile.avatar %}-->
+<!--                        <img class="card-profile-img" src="{{ profile.avatar.url }}" alt="avatar">-->
+<!--                        {% else %}-->
+<!--                        <img class="card-profile-img" src="{% static 'assets/images/admin.png' %}" alt="profile-background">-->
+<!--                        {% endif %}-->
+<!--                        <h3 class="mb-3">{{ profile.user.username }}</h3>-->
+<!--                        <h4 class="mb-3">{{ profile.user.email }}</h4>-->
+<!--                        {% if user.is_superuser %}-->
+<!--                        <h4 class="mb-3">超管</h4>-->
+<!--                        {% elif profile.is_disposer %}-->
+<!--                        <h4 class="mb-3">处理员</h4>-->
+<!--                        <h5 class="mb-3">{{ profile.unit }}</h5>-->
+<!--                        {% elif profile.is_poster %}-->
+<!--                        <h4 class="mb-3">上传员</h4>-->
+<!--                        <h5 class="mb-3">{{ profile.unit }}</h5>-->
+<!--                        {% else %}-->
+<!--                        <h4 class="mb-3">游客</h4>-->
+<!--                        {% endif %}-->
+<!--                        <p class="mb-4">{{ profile.bio }}</p>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <form class="card" method="post" enctype="multipart/form-data">-->
+<!--                {% csrf_token %}-->
+<!--                    <div class="card-body">-->
+<!--                    <h3 class="card-title">编辑资料</h3>-->
+<!--                    <div class="row">-->
+<!--                        <div class="col-md-6">-->
+<!--                            <div class="form-group">-->
+<!--                                <label class="form-label" for="username">姓名</label>-->
+<!--                                <div class="input-icon">-->
+<!--                                    <span class="input-icon-addon">-->
+<!--                                        <i class="fe fe-user"></i>-->
+<!--                                    </span>-->
+<!--                                    <input type="text" class="form-control" value="{{ profile.user.username }}" id="username" name="username">-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="col-md-6">-->
+<!--                            <div class="form-group">-->
+<!--                                <label class="form-label" for="avatar">头像</label>-->
+<!--                                <div class="custom-file">-->
+<!--                                    <input type="file" class="custom-file-input" name="avatar" id="avatar" {% if profile.avatar %} value="{{ user.profile.avatar.url }}" {% endif %}>-->
+<!--                                    <label class="custom-file-label">选择图片</label>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="col-sm-6 col-md-12">-->
+<!--                            <div class="form-group">-->
+<!--                                <label class="form-label" for="email">电子邮箱</label>-->
+<!--                                <div class="input-icon">-->
+<!--                                    <span class="input-icon-addon">-->
+<!--                                        <i class="fe fe-mail"></i>-->
+<!--                                    </span>-->
+<!--                                    <input type="email" class="form-control" value="{{ profile.user.email }}" id="email" name="email">-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="col-sm-6 col-md-12">-->
+<!--                            <div class="form-group">-->
+<!--                                <label class="form-label" for="phone">电话号码</label>-->
+<!--                                <div class="input-icon">-->
+<!--                                    <span class="input-icon-addon">-->
+<!--                                        <i class="fe fe-phone"></i>-->
+<!--                                    </span>-->
+<!--                                    <input type="text" class="form-control" value="{{ profile.phone }}" id="phone" name="phone">-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="col-md-12">-->
+<!--                            <div class="form-group mb-0">-->
+<!--                                <label class="form-label" for="bio">关于我</label>-->
+<!--                                <textarea rows="5" class="form-control" id="bio" name="bio">{{ profile.bio }}</textarea>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    </div>-->
+<!--                    <div class="card-footer text-right">-->
+<!--                        <button class="btn btn-primary">更新信息</button>-->
+<!--                    </div>-->
+<!--                </form>-->
+<!--            </div>-->
+<!--            <div class="col-lg-8">-->
+<!--                <div class="card">-->
+<!--                    <div class="card-header">-->
+<!--                        <h3 class="card-title">通知列表</h3>-->
+<!--                    </div>-->
+<!--                    <div class="card-body">-->
+<!--                        <div class="container">-->
+<!--                            &lt;!&ndash; 未读通知列表 &ndash;&gt;-->
+<!--                            <div class="row mt-2 ml-4">-->
+<!--                                <ul class="list-group">-->
+<!--                                    {% for notice in notices %}-->
+<!--                                        <li class="list-group-item" id="notice_link">-->
+<!--                                            <span style="color: #5897fb;">-->
+<!--                                                {{ notice.actor }}-->
+<!--                                            </span>-->
+<!--                                                {{ notice.verb }}。-->
+<!--                                            {{ notice.timestamp|date:"Y/m/d H:i" }}-->
+<!--                                        </li>-->
+<!--                                    {% endfor %}-->
+<!--                                </ul>-->
+<!--                            </div>-->
+<!--                            <div class="row mt-4 ml-4">-->
+<!--                                <a href="{% url "notice:update" %}" class="btn btn-warning" role="button">清空所有通知</a>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            {% if profile.is_disposer or user.is_superuser %}-->
+<!--            <div class="col-md-6 col-xl-12">-->
+<!--                <div class="card">-->
+<!--                    <div class="card-header">-->
+<!--                        <h3 class="card-title">最近处理事件</h3>-->
+<!--                    </div>-->
+<!--                    <div class="card-body">-->
+<!--                        <div class="container">-->
+<!--                            <div class="row mt-2 ml-4">-->
+<!--                                <ul class="list-group">-->
+<!--                                    {% for dispose_event in dispose_events %}-->
+<!--                                        <li class="list-group-item">-->
+<!--                                            编号为-->
+<!--                                            <span style="color: #5897fb;">-->
+<!--                                                {{ dispose_event.rec_id }}-->
+<!--                                            </span>-->
+<!--                                                ：{{ dispose_event.create_time }}于{{ dispose_event.community }}发生的{{ dispose_event.sub_type }}事件-->
+<!--                                        </li>-->
+<!--                                    {% endfor %}-->
+<!--                                </ul>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            {% endif %}-->
+<!--            {% if profile.is_poster or user.is_superuser %}-->
+<!--            <div class="col-12">-->
+<!--                <div class="card">-->
+<!--                    <div class="card-header">-->
+<!--                        <h3 class="card-title">最近上传事件</h3>-->
+<!--                    </div>-->
+<!--                    <div class="card-body">-->
+<!--                        <div class="container">-->
+<!--                            <div class="row mt-2 ml-4">-->
+<!--                                <ul class="list-group">-->
+<!--                                    {% for post_event in post_events %}-->
+<!--                                        <li class="list-group-item">-->
+<!--                                            编号为-->
+<!--                                            <span style="color: #5897fb;">-->
+<!--                                                {{ post_event.rec_id }}-->
+<!--                                            </span>-->
+<!--                                                ：{{ post_event.create_time }}于{{ post_event.community }}发生的{{ post_event.sub_type }}事件-->
+<!--                                        </li>-->
+<!--                                    {% endfor %}-->
+<!--                                </ul>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            {% endif %}-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--<style>-->
+<!--    #notice_link a:link {-->
+<!--        color: black;-->
+<!--    }-->
+
+<!--    #notice_link a:visited {-->
+<!--        color: lightgrey;-->
+<!--    }-->
+<!--</style>-->
+
+<!--<div class="right_col" role="main">-->
+<!--  <div class="">-->
+    <div class="page-title">
+<!--      <div class="title_left">-->
+<!--        <h3>个人信息</h3>-->
+<!--      </div>-->
+
+      <div class="title_right">
+        <div class="col-md-5 col-sm-5  form-group pull-right top_search">
+<!--          <div class="input-group">-->
+<!--            <input type="text" class="form-control" placeholder="Search for...">-->
+<!--            <span class="input-group-btn">-->
+<!--              <button class="btn btn-secondary" type="button">Go!</button>-->
+<!--            </span>-->
+<!--          </div>-->
+        </div>
+      </div>
     </div>
+
+    <div class="clearfix"></div>
+
+    <div class="row">
+      <div class="col-md-12 col-sm-12 ">
+        <div class="x_panel">
+          <div class="x_title">
+            <h2>用户信息 <small>User profile</small></h2>
+            <ul class="nav navbar-right panel_toolbox">
+              <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+              </li>
+<!--              <li class="dropdown">-->
+<!--                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>-->
+<!--                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">-->
+<!--                    <a class="dropdown-item" href="#">Settings 1</a>-->
+<!--                    <a class="dropdown-item" href="#">Settings 2</a>-->
+<!--                  </div>-->
+<!--              </li>-->
+              <li><a class="close-link"><i class="fa fa-close"></i></a>
+              </li>
+            </ul>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+            <div class="col-md-3 col-sm-3  profile_left">
+              <div class="profile_img">
+                <div id="crop-avatar">
+                  <!-- Current avatar -->
+                    {% if profile.avatar %}-->
+                        <img class="card-profile-img" src="{{ profile.avatar.url }}" alt="avatar">
+                    {% else %}
+                        <img class="card-profile-img" src="{% static 'assets/images/admin.png' %}" alt="profile-background">
+                    {% endif %}
+<!--                  <img class="img-responsive avatar-view" src="https://pic1.zhimg.com/80/v2-cadb4ff64021e5e0541128ba2c409b03_720w.jpg?source=1940ef5c" alt="Avatar" title="Change the avatar">-->
+                </div>
+              </div>
+              <h3>{{ profile.user.username }}</h3>
+
+              <ul class="list-unstyled user_data">
+
+                <li>
+                  <i class="fa fa-briefcase user-profile-icon"></i>
+                    {% if user.is_superuser %}
+                        超管
+                    {% elif profile.is_disposer %}
+                        处理员 {{ profile.unit }}
+                    {% elif profile.is_poster %}
+                        上传员 {{ profile.unit }}
+                    {% else %}
+                        游客
+                    {% endif %}
+                </li>
+
+                <li class="m-top-xs">
+                  <i class="fa fa-external-link user-profile-icon"></i>
+                  {{ profile.user.email }}
+                </li>
+              </ul>
+
+              <br />
+
+              <!-- start skills -->
+<!--              <h4>Skills</h4>-->
+<!--              <ul class="list-unstyled user_data">-->
+<!--                <li>-->
+<!--                  <p>Web Applications</p>-->
+<!--                  <div class="progress progress_sm">-->
+<!--                    <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="50"></div>-->
+<!--                  </div>-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                  <p>Website Design</p>-->
+<!--                  <div class="progress progress_sm">-->
+<!--                    <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="70"></div>-->
+<!--                  </div>-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                  <p>Automation & Testing</p>-->
+<!--                  <div class="progress progress_sm">-->
+<!--                    <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="30"></div>-->
+<!--                  </div>-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                  <p>UI / UX</p>-->
+<!--                  <div class="progress progress_sm">-->
+<!--                    <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="50"></div>-->
+<!--                  </div>-->
+<!--                </li>-->
+<!--              </ul>-->
+              <!-- end of skills -->
+
+            </div>
+            <div class="col-md-9 col-sm-9 ">
+
+<!--              <div class="profile_title">-->
+<!--                <div class="col-md-6">-->
+<!--                  <h2>User Activity Report</h2>-->
+<!--                </div>-->
+<!--                <div class="col-md-6">-->
+<!--                  <div id="reportrange" class="pull-right" style="margin-top: 5px; background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #E6E9ED">-->
+<!--                    <i class="fa fa-calendar"></i>-->
+<!--                    <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--              </div>-->
+              <!-- start of user-activity-graph -->
+<!--              <div id="graph_bar" style="width:100%; height:280px;"></div>-->
+              <!-- end of user-activity-graph -->
+
+              <div class="" role="tabpanel" data-example-id="togglable-tabs">
+                <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                  <li role="presentation" class=""><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="false">消息列表</a>
+                  </li>
+                  <li role="presentation" class=""><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">最近提交/处理</a>
+                  </li>
+                </ul>
+                <div id="myTabContent" class="tab-content">
+                  <div role="tabpanel" class="tab-pane active " id="tab_content1" aria-labelledby="home-tab">
+
+                    <!-- start recent activity -->
+                    <ul class="messages">
+                    {% for notice in notices %}
+                      <li>
+                        <div class="message_date">
+                          <h4 class="date text-info">{{ notice.timestamp|date:"Y/m/d" }}</h4>
+                          <h4 class="month">{{ notice.timestamp|date:"H:i" }}</h4>
+                        </div>
+                        <div class="message_wrapper">
+                          <h4 class="heading">{{ notice.actor }}</h4>
+                          <blockquote class="message">{{ notice.verb }}</blockquote>
+                        </div>
+                      </li>
+                      <br />
+                    {% endfor %}
+                      <br />
+                    {% if user.notifications.unread %}
+                      <div class="card-footer text-right">
+                        <a href="{% url "notice:update" %}" class="btn btn-secondary btn-xs" role="button">清空所有通知</a>
+                      </div>
+                    {% else %}
+                      <li>
+                        <div class="message_wrapper">
+                            <h4 class="heading">暂时没有消息</h4>
+                            <br />
+                        </div>
+                      </li>
+                    {% endif %}
+                    </ul>
+                    <!-- end recent activity -->
+
+                  </div>
+                  <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
+
+                    <!-- start user projects -->
+                    <table class="data table table-striped no-margin">
+                      <thead>
+                        <tr>
+                          <th>编号</th>
+                          <th>事件类型</th>
+                          <th>所属街道</th>
+                          <th class="hidden-phone">状态</th>
+                          <th>时间</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% if profile.is_disposer or user.is_superuser %}
+                          {% for dispose_event in dispose_events %}
+                            <tr>
+                              <td>{{ dispose_event.rec_id }}</td>
+                              <td>{{ dispose_event.sub_type }}</td>
+                              <td>{{ dispose_event.community }}</td>
+                              <td>{{ dispose_event.achieve }}</td>
+                              <td>{{ dispose_event.create_time }}</td>
+                            </tr>
+                          {% endfor %}
+                        {% endif %}
+                      {% if profile.is_poster or user.is_superuser %}
+                        {% for post_event in post_events %}
+                          <tr>
+                            <td>{{ post_event.rec_id }}</td>
+                            <td>{{ post_event.sub_type }}</td>
+                            <td>{{ post_event.community }}</td>
+                            <td>{{ post_event.achieve }}</td>
+                            <td>{{ post_event.create_time }}</td>
+                          </tr>
+                        {% endfor %}
+                      {% endif %}
+                      </tbody>
+                    </table>
+                    <!-- end user projects -->
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
-<style>
-    #notice_link a:link {
-        color: black;
-    }
-
-    #notice_link a:visited {
-        color: lightgrey;
-    }
-</style>
+    <div class="row">
+      <div class="col-md-12 col-sm-12 ">
+          <div class="x_panel">
+              <div class="x_title">
+                  <h2>个人信息修改 <small></small></h2>
+                  <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                      <li><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                  </ul>
+                  <div class="clearfix"></div>
+              </div>
+              <div class="x_content">
+                <form class="card" method="post" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <div class="card-body">
+                  <h3 class="card-title">编辑资料</h3>
+                  <div class="row">
+                      <div class="col-md-6">
+                          <div class="form-group">
+                              <label class="form-label" for="username">姓名</label>
+                              <div class="input-icon">
+                                  <span class="input-icon-addon">
+                                      <i class="fe fe-user"></i>
+                                  </span>
+                                  <input type="text" class="form-control" value="{{ profile.user.username }}" id="username" name="username">
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-6">
+                          <div class="form-group">
+                              <label class="form-label" for="avatar">头像</label>
+                              <div class="custom-file">
+                                  <input type="file" class="custom-file-input" name="avatar" id="avatar"}>
+                                  <label class="custom-file-label">选择图片</label>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-sm-6 col-md-12">
+                          <div class="form-group">
+                              <label class="form-label" for="email">电子邮箱</label>
+                              <div class="input-icon">
+                                  <span class="input-icon-addon">
+                                      <i class="fe fe-mail"></i>
+                                  </span>
+                                  <input type="email" class="form-control" value="{{ profile.user.email }}" id="email" name="email">
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-sm-6 col-md-12">
+                          <div class="form-group">
+                              <label class="form-label" for="phone">电话号码</label>
+                              <div class="input-icon">
+                                  <span class="input-icon-addon">
+                                      <i class="fe fe-phone"></i>
+                                  </span>
+                                  <input type="text" class="form-control" value="{{ profile.phone }}" id="phone" name="phone">
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-12">
+                          <div class="form-group mb-0">
+                              <label class="form-label" for="bio">关于我</label>
+                              <textarea rows="5" class="form-control" id="bio" name="bio">{{ profile.bio }}</textarea>
+                          </div>
+                      </div>
+                  </div>
+                  </div>
+                  <div class="card-footer text-right">
+                      <button class="btn btn-secondary btn-xs">更新信息</button>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
 
 {% endblock content %}
