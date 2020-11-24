@@ -1,155 +1,390 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-<div class="my-3 my-md-5">
-    <div class="container">
-        <div class="row row-cards">
-            <div class="col-md-6 col-lg-3">
-                <div class="row row-cards">
-                <div class="card" style="background-color:rgba(255,255,255,0.5);width: 17.6rem">
-                    <div class="card-body">
-                        <div class="card-value float-right text-yellow">9%</div>
-                        <h3 class="mb-1">423</h3>
-                        <div class="text-muted">今日登记事件</div>
-                    </div>
-                    <div class="card-chart-bg">
-                        <div id="post-chart" style="height: 90%"></div>
-                        <script>
-                            let post_chart = echarts.init(
-                                document.getElementById('post-chart'), 'white', {renderer: 'canvas'}
-                            );
-                            post_chart.setOption({{ post_line | safe}});
-                        </script>
-                    </div>
+    <!-- top tiles -->
+    <div class="row" style="display: inline-block;" style="height: 100px;">
+        <div class="tile_count">
+            <div class="col-md-2 col-sm-4  tile_stats_count" style="width: 300px; margin-top: 10px; ">
+                <span class="count_top"><i class="fa fa-clock-o"></i> 本日新增事件数</span>
+<!--                <div class="count" style="font-size: 60px; margin-top: 25px; padding-bottom: 20px">{{ today_post_event_num }}</div>-->
+<!--                <span class="count_bottom"><i class="green">4% </i></span>-->
+                <div class="count" style="font-size: 60px; margin-top: 25px; padding-bottom: 20px">66</div>
+            </div>
+            <div class="col-md-2 col-sm-4  tile_stats_count" style="width: 300px; margin-top: 10px;">
+                <span class="count_top"><i class="fa fa-clock-o"></i> 本日解决事件数</span>
+<!--                <div class="count" style="font-size: 60px; margin-top: 25px; padding-bottom: 20px">{{ today_finish_event_num }}</div>-->
+<!--                <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>3% </i></span>-->
+                <div class="count" style="font-size: 60px; margin-top: 25px; padding-bottom: 20px">54</div>
+            </div>
+            <div class="col-md-2 col-sm-4  tile_stats_count" style="width: 300px; margin-top: 10px;">
+                <span class="count_top"><i class="fa fa-clock-o"></i> 本日解决最多事件街道</span>
+                <div class="count green" style="font-size: 37px; margin-top: 25px; padding-bottom: 20px">{{ max_finish_street }}</div>
+<!--                <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span>-->
+            </div>
+            <div class="col-md-2 col-sm-4  tile_stats_count" style="width: 600px; margin-top: 10px; padding-left: 40px">
+<!--              <span class="chart" data-percent="{{ dash_data_intime_to }}">-->
+                <span class="chart" data-percent="12">
+                  <span class="count_top"><i class="fa fa-clock-o"></i>未解决</span>
+                  <span class="percent"></span>
+              </span>
+            </div>
+            <div class="col-md-2 col-sm-4  tile_stats_count" style="width: 600px; margin-top: 10px; padding-left: 40px">
+              <span class="chart" data-percent="{{ dash_data_overtime }}">
+                  <span class="count_top"><i class="fa fa-clock-o"></i>超时</span>
+                  <span class="percent"></span>
+              </span>
+            </div>
+        </div>
+    </div>
+    <!-- /top tiles -->
+
+    <div class="row">
+        <div class="col-lg-6 col-xl-6">
+            <div class="x_panel tile fixed_height_390">
+                <div class="x_title">
+                    <h2>今日事件最多街道</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                               aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="#">Settings 1</a>
+                                <a class="dropdown-item" href="#">Settings 2</a>
+                            </div>
+                        </li>
+                        <li><a class="close-link"><i class="fa fa-close"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
                 </div>
-                <div class="card" style="background-color:rgba(255,255,255,0.5);width: 17.6rem">
-                    <div class="card-body">
-                        <div class="card-value float-right text-yellow">92件</div>
-                        <h3 class="mb-1" style="font-size: 14px">坪山街道</h3>
-                        <div class="text-muted">今日事件最多街道</div>
-                    </div>
-                    <div class="card-chart-bg">
-                        <div id="street-chart" style="height: 100%"></div>
-                        <script>
-                            let street_chart = echarts.init(
-                                document.getElementById('street-chart'), 'white', {renderer: 'canvas'}
-                            );
-                            street_chart.setOption({{ street_bar | safe}});
-                        </script>
-                    </div>
-                </div>
+                <div class="card-chart-bg">
+                    <div id="street-chart" style="height: 100%; margin-top:-20px"></div>
+                    <script>
+                        let street_chart = echarts.init(
+                            document.getElementById('street-chart'), 'white', {renderer: 'canvas'}
+                        );
+                        street_chart.setOption({{ street_bar | safe}});
+                    </script>
                 </div>
             </div>
-            <div class="col-md-6 col-lg-3">
-                <div class="row row-cards">
-                <div class="card" style="background-color:rgba(255,255,255,0.5);width: 17.7rem;height: 9.5rem">
-                    <div class="card-body">
-                        <div class="card-value float-right text-yellow">9%</div>
-                        <h3 class="mb-1">423</h3>
-                        <div class="text-muted">今日处置事件</div>
-                    </div>
-                    <div class="card-chart-bg">
-                        <div id="dispose-chart" style="height: 100%"></div>
-                        <script>
-                            let dispose_chart = echarts.init(
-                                document.getElementById('dispose-chart'), 'white', {renderer: 'canvas'}
-                            );
-                            dispose_chart.setOption({{ dispose_line | safe}});
-                        </script>
-                    </div>
+        </div>
+        <div class="col-lg-6 col-xl-6">
+            <div>
+                <div class="x_panel tile fixed_height_390">
+                <div class="x_title">
+                    <h2>今日处置事件</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                               aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="#">Settings 1</a>
+                                <a class="dropdown-item" href="#">Settings 2</a>
+                            </div>
+                        </li>
+                        <li><a class="close-link"><i class="fa fa-close"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
                 </div>
-                <div class="card" style="background-color:rgba(255,255,255,0.5);width: 17.7rem; height: 9.5rem">
-                    <div class="card-body">
-                        <div class="text-muted">今日关键词</div>
-                        <div id="word_cloud" style="height: 100%"></div>
-                        <script>
-                            let wordcloud_chart = echarts.init(
-                                document.getElementById('word_cloud'), 'white', {renderer: 'canvas'}
-                            );
-                            wordcloud_chart.setOption({{ word_cloud | safe}});
-                        </script>
-                    </div>
-                </div>
-                </div>
-            </div>
-            <!-- 图表 -->
-            <div class="col-md-6">
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="card" style="background-color:rgba(255,255,255,0.5)">
-                            <div class="card-header">
-                                <h3 class="card-title">今日事件性质</h3>
-                            </div>
-                            <div class="card-body">
-                                <div id="pie-chart" style="height: 14rem;"></div>
-                                <script>
-                                    let pie_chart = echarts.init(
-                                        document.getElementById('pie-chart'), 'white', {renderer: 'canvas'}
-                                        );
-                                    pie_chart.setOption({{ pie_chart | safe}});
-                                </script>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="card" style="background-color:rgba(255,255,255,0.5)">
-                            <div class="card-header">
-                                <h3 class="card-title">近7日完成事件</h3>
-                            </div>
-                            <div class="card-body">
-                                <div id="gauge-chart" style="height: 14rem;"></div>
-                                <script>
-                                    let gauge_chart = echarts.init(
-                                        document.getElementById('gauge-chart'), 'white', {renderer: 'canvas'}
-                                        );
-                                    gauge_chart.setOption({{ gauge_chart | safe}});
-                                </script>
-                            </div>
-                        </div>
-                    </div>
+                <div class="card-chart-bg">
+                    <div id="dispose-chart" style="height: 100%; margin-top:-20px"></div>
+                    <script>
+                        let dispose_chart = echarts.init(
+                            document.getElementById('dispose-chart'), 'white', {renderer: 'canvas'}
+                        );
+                        dispose_chart.setOption({{ dispose_line | safe}});
+                    </script>
                 </div>
             </div>
-<!--            {#最近事件统计图#}-->
-            <div class="col-md-6 col-xl-12">
-                <div class="card" style="background-color:rgba(255,255,255,0.5)">
-                    <div class="card-header">
-                        <h3 class="card-title">Line</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 col-sm-12 ">
+            <div class="dashboard_graph">
+
+                <div class="row x_title">
+                    <div class="col-md-6">
+                        <h3>最近事件统计图 <small></small></h3>
                     </div>
-                    <div  class="white-box">
-                        <div class="col-md-3 col-sm-4 col-xs-6 pull-right">
-                            <select datatype="text" class="form-control pull-right row b-none" name="street" id="id_street" onchange="updateLine()">
-                                <option value='all'>--</option>
-                                {% for street in streets %}
-                                    <option value={{ street }}>{{ street }}</option>
-                                {% endfor %}
-                            </select>
+                    <div class="col-md-6">
+                        <div id="reportrange" class="pull-right"
+                             style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+                            <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                            <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
                         </div>
                     </div>
-                    <div class="card-body">
-                        <div id="line" class="chart-container" style="height: 405px;"></div>
-                        <script>
-                            let line_list = {{ line_charts | safe}};
-                                function updateLine() {
-                                    let street_name = document.getElementById("id_street").value;
-                                    let line_chart = echarts.init(
-                                        document.getElementById('line'), 'white', {renderer: 'svg'}
-                                    );
-                                    line_chart.setOption(JSON.parse(line_list[street_name]));
-                                }
+                </div>
+
+                <div class="col-md-9 col-sm-9 ">
+<!--                    <div id="chart_plot_01" class="demo-placeholder"></div>-->
+                    <div id="line" class="chart-container" style="height: 405px;width: 1200px"></div>
+                    <script>
+                        let line_list = {{ line_charts | safe}};
+                            function updateLine() {
+                                let street_name = document.getElementById("id_street").value;
                                 let line_chart = echarts.init(
                                     document.getElementById('line'), 'white', {renderer: 'svg'}
                                 );
-                                line_chart.setOption(JSON.parse(line_list['all']));
-                        </script>
-                    </div>
+                                line_chart.setOption(JSON.parse(line_list[street_name]));
+                            }
+                            let line_chart = echarts.init(
+                                document.getElementById('line'), 'white', {renderer: 'svg'}
+                            );
+                            line_chart.setOption(JSON.parse(line_list['all']));
+                    </script>
+                </div>
+
+                <div class="clearfix"></div>
+            </div>
+        </div>
+
+    </div>
+    <br/>
+
+    <div class="row">
+
+
+        <div class="col-md-6 col-sm-6 ">
+            <div class="x_panel tile fixed_height_320">
+                <div class="x_title">
+                    <h2>今日事件性质</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                               aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="#">Settings 1</a>
+                                <a class="dropdown-item" href="#">Settings 2</a>
+                            </div>
+                        </li>
+                        <li><a class="close-link"><i class="fa fa-close"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div id="pie-chart" style="height: 14rem;"></div>
+                    <script>
+                        let pie_chart = echarts.init(
+                            document.getElementById('pie-chart'), 'white', {renderer: 'canvas'}
+                            );
+                        pie_chart.setOption({{ pie_chart | safe}});
+                    </script>
+<!--                    <h4>App Usage across versions</h4>-->
+<!--                    <div class="widget_summary">-->
+<!--                        <div class="w_left w_25">-->
+<!--                            <span>0.1.5.2</span>-->
+<!--                        </div>-->
+<!--                        <div class="w_center w_55">-->
+<!--                            <div class="progress">-->
+<!--                                <div class="progress-bar bg-green" role="progressbar" aria-valuenow="60"-->
+<!--                                     aria-valuemin="0" aria-valuemax="100" style="width: 66%;">-->
+<!--                                    <span class="sr-only">60% Complete</span>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="w_right w_20">-->
+<!--                            <span>123k</span>-->
+<!--                        </div>-->
+<!--                        <div class="clearfix"></div>-->
+<!--                    </div>-->
+
+<!--                    <div class="widget_summary">-->
+<!--                        <div class="w_left w_25">-->
+<!--                            <span>0.1.5.3</span>-->
+<!--                        </div>-->
+<!--                        <div class="w_center w_55">-->
+<!--                            <div class="progress">-->
+<!--                                <div class="progress-bar bg-green" role="progressbar" aria-valuenow="60"-->
+<!--                                     aria-valuemin="0" aria-valuemax="100" style="width: 45%;">-->
+<!--                                    <span class="sr-only">60% Complete</span>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="w_right w_20">-->
+<!--                            <span>53k</span>-->
+<!--                        </div>-->
+<!--                        <div class="clearfix"></div>-->
+<!--                    </div>-->
+<!--                    <div class="widget_summary">-->
+<!--                        <div class="w_left w_25">-->
+<!--                            <span>0.1.5.4</span>-->
+<!--                        </div>-->
+<!--                        <div class="w_center w_55">-->
+<!--                            <div class="progress">-->
+<!--                                <div class="progress-bar bg-green" role="progressbar" aria-valuenow="60"-->
+<!--                                     aria-valuemin="0" aria-valuemax="100" style="width: 25%;">-->
+<!--                                    <span class="sr-only">60% Complete</span>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="w_right w_20">-->
+<!--                            <span>23k</span>-->
+<!--                        </div>-->
+<!--                        <div class="clearfix"></div>-->
+<!--                    </div>-->
+<!--                    <div class="widget_summary">-->
+<!--                        <div class="w_left w_25">-->
+<!--                            <span>0.1.5.5</span>-->
+<!--                        </div>-->
+<!--                        <div class="w_center w_55">-->
+<!--                            <div class="progress">-->
+<!--                                <div class="progress-bar bg-green" role="progressbar" aria-valuenow="60"-->
+<!--                                     aria-valuemin="0" aria-valuemax="100" style="width: 5%;">-->
+<!--                                    <span class="sr-only">60% Complete</span>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="w_right w_20">-->
+<!--                            <span>3k</span>-->
+<!--                        </div>-->
+<!--                        <div class="clearfix"></div>-->
+<!--                    </div>-->
+<!--                    <div class="widget_summary">-->
+<!--                        <div class="w_left w_25">-->
+<!--                            <span>0.1.5.6</span>-->
+<!--                        </div>-->
+<!--                        <div class="w_center w_55">-->
+<!--                            <div class="progress">-->
+<!--                                <div class="progress-bar bg-green" role="progressbar" aria-valuenow="60"-->
+<!--                                     aria-valuemin="0" aria-valuemax="100" style="width: 2%;">-->
+<!--                                    <span class="sr-only">60% Complete</span>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="w_right w_20">-->
+<!--                            <span>1k</span>-->
+<!--                        </div>-->
+<!--                        <div class="clearfix"></div>-->
+<!--                    </div>-->
+
                 </div>
             </div>
-            <!-- 实时事件列表 -->
-            <div class="col-12">
-                <div class="card" style="background-color:rgba(255,255,255,0.5)">
-                    <div class="card-header">
-                        <h3 class="card-title">实时事件列表</h3>
-                    </div>
+        </div>
+
+        <div class="col-md-6 col-sm-6 ">
+            <div class="x_panel tile fixed_height_320 overflow_hidden">
+                <div class="x_title">
+                    <h2>近7日完成事件</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                               aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="#">Settings 1</a>
+                                <a class="dropdown-item" href="#">Settings 2</a>
+                            </div>
+                        </li>
+                        <li><a class="close-link"><i class="fa fa-close"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div id="gauge-chart" style="height: 14rem;"></div>
+                    <script>
+                        let gauge_chart = echarts.init(
+                            document.getElementById('gauge-chart'), 'white', {renderer: 'canvas'}
+                            );
+                        gauge_chart.setOption({{ gauge_chart | safe}});
+                    </script>
+<!--                    <table class="" style="width:100%">-->
+<!--                        <tr>-->
+<!--                            <th style="width:37%;">-->
+<!--                                <p>Top 5</p>-->
+<!--                            </th>-->
+<!--                            <th>-->
+<!--                                <div class="col-lg-7 col-md-7 col-sm-7 ">-->
+<!--                                    <p class="">Device</p>-->
+<!--                                </div>-->
+<!--                                <div class="col-lg-5 col-md-5 col-sm-5 ">-->
+<!--                                    <p class="">Progress</p>-->
+<!--                                </div>-->
+<!--                            </th>-->
+<!--                        </tr>-->
+<!--                        <tr>-->
+<!--                            <td>-->
+<!--                                <canvas class="canvasDoughnut" height="140" width="140"-->
+<!--                                        style="margin: 15px 10px 10px 0"></canvas>-->
+<!--                            </td>-->
+<!--                            <td>-->
+<!--                                <table class="tile_info">-->
+<!--                                    <tr>-->
+<!--                                        <td>-->
+<!--                                            <p><i class="fa fa-square blue"></i>IOS </p>-->
+<!--                                        </td>-->
+<!--                                        <td>30%</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td>-->
+<!--                                            <p><i class="fa fa-square green"></i>Android </p>-->
+<!--                                        </td>-->
+<!--                                        <td>10%</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td>-->
+<!--                                            <p><i class="fa fa-square purple"></i>Blackberry </p>-->
+<!--                                        </td>-->
+<!--                                        <td>20%</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td>-->
+<!--                                            <p><i class="fa fa-square aero"></i>Symbian </p>-->
+<!--                                        </td>-->
+<!--                                        <td>15%</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td>-->
+<!--                                            <p><i class="fa fa-square red"></i>Others </p>-->
+<!--                                        </td>-->
+<!--                                        <td>30%</td>-->
+<!--                                    </tr>-->
+<!--                                </table>-->
+<!--                            </td>-->
+<!--                        </tr>-->
+<!--                    </table>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div style="height: 20px"></div>
+
+
+    <div class="row">
+        <div class="col-md-12 col-sm-12 ">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>实时事件列表</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                               aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="#">Settings 1</a>
+                                <a class="dropdown-item" href="#">Settings 2</a>
+                            </div>
+                        </li>
+                        <li><a class="close-link"><i class="fa fa-close"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
                     <div class="table-responsive">
                         <table class="table card-table table-vcenter text-nowrap datatable">
                             <thead>
@@ -254,6 +489,59 @@
                 </div>
             </div>
         </div>
+
+
+<!--        <div class="col-md-6 col-sm-6 ">-->
+
+
+<!--            <div class="row">-->
+
+<!--                <div class="col-md-12 col-sm-12 ">-->
+<!--                    <div class="x_panel">-->
+<!--                        <div class="x_title">-->
+<!--                            <h2>热度地图 <small>深圳市</small></h2>-->
+<!--                            <ul class="nav navbar-right panel_toolbox">-->
+<!--                                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>-->
+<!--                                </li>-->
+<!--                                <li class="dropdown">-->
+<!--                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"-->
+<!--                                       aria-expanded="false"><i class="fa fa-wrench"></i></a>-->
+<!--                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">-->
+<!--                                        <a class="dropdown-item" href="#">Settings 1</a>-->
+<!--                                        <a class="dropdown-item" href="#">Settings 2</a>-->
+<!--                                    </div>-->
+<!--                                </li>-->
+<!--                                <li><a class="close-link"><i class="fa fa-close"></i></a>-->
+<!--                                </li>-->
+<!--                            </ul>-->
+<!--                            <div class="clearfix"></div>-->
+<!--                        </div>-->
+<!--                        <div class="x_content">-->
+<!--                            <div class="dashboard-widget-content">-->
+<!--                                <div class="card" style="height: 520px; background-color:rgba(255,255,255,0.5)">-->
+<!--                                    <div class="card-header">-->
+<!--                                        <h3 class="card-title">Map</h3>-->
+<!--                                    </div>-->
+<!--                                    <div class="card-body" style="height: 450px">-->
+<!--                                        <div id="map" class="chart-container" style="height: 500px;"></div>-->
+<!--                                        <script>-->
+<!--                                            let map_chart = echarts.init(-->
+<!--                                                document.getElementById('map'), 'white', {renderer: 'canvas'}-->
+<!--                                            );-->
+<!--                                            map_chart.setOption({{ map_chart | safe}});-->
+<!--                                        </script>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--            </div>-->
+<!--            <div class="row">-->
+
+<!--                &lt;!&ndash; end of weather widget &ndash;&gt;-->
+<!--            </div>-->
+<!--        </div>-->
     </div>
-</div>
 {% endblock content %}

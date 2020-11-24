@@ -234,4 +234,3 @@ class Event(models.Model):
 
     def __str__(self):
         return str(self.rec_id) + "    " + str(self.create_time)
-
