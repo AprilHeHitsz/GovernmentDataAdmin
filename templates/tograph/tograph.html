@@ -1,173 +1,246 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-<div class="page-title">
-  <div class="title_left">
-    <h3>Form Wizards</h3>
-  </div>
+<body>
+  <div class="page-title">
+    <div class="title_left">
+      <h3>Form Wizards</h3>
+    </div>
 
-  <div class="title_right">
-    <div class="col-md-5 col-sm-5  form-group row pull-right top_search">
-      <div class="input-group">
-        <input type="text" class="form-control" placeholder="Search for...">
-        <span class="input-group-btn">
-                  <button class="btn btn-secondary" type="button">Go!</button>
-              </span>
+    <div class="title_right">
+      <div class="col-md-5 col-sm-5  form-group row pull-right top_search">
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="Search for...">
+          <span class="input-group-btn">
+                    <button class="btn btn-secondary" type="button">Go!</button>
+                </span>
+        </div>
       </div>
     </div>
   </div>
-</div>
-<div class="clearfix"></div>
+  <div class="clearfix"></div>
 
-<div class="row">
+  <div class="row">
 
-  <div class="col-md-12 col-sm-12 ">
-    <div class="x_panel">
-      <div class="x_title">
-        <h2>Form Wizards <small>Sessions</small></h2>
-        <ul class="nav navbar-right panel_toolbox">
-          <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-          </li>
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-            <ul class="dropdown-menu" role="menu">
-              <li><a href="#">Settings 1</a>
-              </li>
-              <li><a href="#">Settings 2</a>
-              </li>
-            </ul>
-          </li>
-          <li><a class="close-link"><i class="fa fa-close"></i></a>
-          </li>
-        </ul>
-        <div class="clearfix"></div>
-      </div>
-      <div class="x_content">
+    <div class="col-md-12 col-sm-12 ">
+      <div class="x_panel">
 
-        <!-- Tabs -->
-        <div id="wizard_verticle" class="form_wizard wizard_verticle">
-          <ul class="list-unstyled wizard_steps">
-            <li>
-              <a href="#step-11">
-                <span class="step_no">1</span>
-              </a>
+        <div class="x_title">
+          <h2>Form Wizards <small>Sessions</small></h2>
+          <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
             </li>
-            <li>
-              <a href="#step-22">
-                <span class="step_no">2</span>
-              </a>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="#">Settings 1</a>
+                </li>
+                <li><a href="#">Settings 2</a>
+                </li>
+              </ul>
             </li>
-            <li>
-              <a href="#step-33">
-                <span class="step_no">3</span>
-              </a>
-            </li>
-            <li>
-              <a href="#step-44">
-                <span class="step_no">4</span>
-              </a>
+            <li><a class="close-link"><i class="fa fa-close"></i></a>
             </li>
           </ul>
-
-          <div id="step-11">
-            <h2 class="StepTitle">Step 1 Content</h2>
-            <form class="form-horizontal form-label-left">
-
-              <span class="section">Personal Info</span>
-
-              <div class="form-group row">
-                <label class="col-form-label col-md-3 col-sm-3 label-align" form="first-name">First Name <span class="required">*</span>
-                </label>
-                <div class="col-md-6 col-sm-6">
-                  <input type="text" id="first-name2" required="required" class="form-control">
-                </div>
-              </div>
-              <div class="form-group row">
-                <label class="col-form-label col-md-3 col-sm-3 label-align" form="last-name">Last Name <span class="required">*</span>
-                </label>
-                <div class="col-md-6 col-sm-6">
-                  <input type="text" id="last-name2" name="last-name" required="required" class="form-control">
-                </div>
-              </div>
-              <div class="form-group row">
-                <label form="middle-name" class="col-form-label col-md-3 col-sm-3 label-align">Middle Name / Initial</label>
-                <div class="col-md-6 col-sm-6">
-                  <input id="middle-name2" class="form-control " type="text" name="middle-name">
-                </div>
-              </div>
-              <div class="form-group row">
-                <label class="col-form-label col-md-3 col-sm-3 label-align">Gender</label>
-                <div class="col-md-6 col-sm-6">
-                  <div id="gender2" class="btn-group" data-toggle="buttons">
-                    <label class="btn btn-secondary" data-toggle-class="btn-primary" data-toggle-passive-class="btn-secondary">
-                      <input type="radio" name="gender" value="male" class="join-btn"> &nbsp; Male &nbsp;
-                    </label>
-                    <label class="btn btn-primary" data-toggle-class="btn-primary" data-toggle-passive-class="btn-secondary">
-                      <input type="radio" name="gender" value="female" class="join-btn" checked=""> Female
-                    </label>
-                  </div>
-                </div>
-              </div>
-              <div class="form-group row">
-                <label class="col-form-label col-md-3 col-sm-3 label-align">Date Of Birth <span class="required">*</span>
-                </label>
-                <div class="col-md-6 col-sm-6">
-                  <input id="birthday2" class="date-picker form-control" required="required" type="text">
-                </div>
-              </div>
-
-            </form>
-          </div>
-          <div id="step-22">
-            <h2 class="StepTitle">Step 2 Content</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-              Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </p>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-              in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </p>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-              in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </p>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-              in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </p>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-              in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </p>
-          </div>
-          <div id="step-33">
-            <h2 class="StepTitle">Step 3 Content</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-              Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </p>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-              in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </p>
-          </div>
-          <div id="step-44">
-            <h2 class="StepTitle">Step 4 Content</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-              Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </p>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-              in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </p>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-              in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </p>
-          </div>
+          <div class="clearfix"></div>
         </div>
-        <!-- End SmartWizard Content -->
+
+        <div class="x_content">
+
+          <!-- Tabs -->
+          <div id="wizard_verticle" class="form_wizard wizard_verticle">
+            <ul class="list-unstyled wizard_steps">
+              <li>
+                <a href="#step-11">
+                  <span class="step_no">1</span>
+                </a>
+              </li>
+              <li>
+                <a href="#step-22">
+                  <span class="step_no">2</span>
+                </a>
+              </li>
+              <li>
+                <a href="#step-33">
+                  <span class="step_no">3</span>
+                </a>
+              </li>
+              <li>
+                <a href="#step-44">
+                  <span class="step_no">4</span>
+                </a>
+              </li>
+            </ul>
+
+            <div id="step-11">
+              <h2 class="StepTitle">Step 1</h2>
+              <form class="form-horizontal form-label-left">
+
+                <span class="section">爬取数据</span>
+
+<!--                <div class="form-group row">-->
+<!--                  <label class="col-form-label col-md-3 col-sm-3 label-align" form="first-name">First Name <span class="required">*</span>-->
+<!--                  </label>-->
+<!--                  <div class="col-md-6 col-sm-6">-->
+<!--                    <input type="text" id="first-name2" required="required" class="form-control">-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--                <div class="form-group row">-->
+<!--                  <label class="col-form-label col-md-3 col-sm-3 label-align" form="last-name">Last Name <span class="required">*</span>-->
+<!--                  </label>-->
+<!--                  <div class="col-md-6 col-sm-6">-->
+<!--                    <input type="text" id="last-name2" name="last-name" required="required" class="form-control">-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--                <div class="form-group row">-->
+<!--                  <label form="middle-name" class="col-form-label col-md-3 col-sm-3 label-align">Middle Name / Initial</label>-->
+<!--                  <div class="col-md-6 col-sm-6">-->
+<!--                    <input id="middle-name2" class="form-control " type="text" name="middle-name">-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--                <div class="form-group row">-->
+<!--                  <label class="col-form-label col-md-3 col-sm-3 label-align">Gender</label>-->
+<!--                  <div class="col-md-6 col-sm-6">-->
+<!--                    <div id="gender2" class="btn-group" data-toggle="buttons">-->
+<!--                      <label class="btn btn-secondary" data-toggle-class="btn-primary" data-toggle-passive-class="btn-secondary">-->
+<!--                        <input type="radio" name="gender" value="male" class="join-btn"> &nbsp; Male &nbsp;-->
+<!--                      </label>-->
+<!--                      <label class="btn btn-primary" data-toggle-class="btn-primary" data-toggle-passive-class="btn-secondary">-->
+<!--                        <input type="radio" name="gender" value="female" class="join-btn" checked=""> Female-->
+<!--                      </label>-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--                <div class="form-group row">-->
+<!--                  <label class="col-form-label col-md-3 col-sm-3 label-align">Date Of Birth <span class="required">*</span>-->
+<!--                  </label>-->
+<!--                  <div class="col-md-6 col-sm-6">-->
+<!--                    <input id="birthday2" class="date-picker form-control" required="required" type="text">-->
+<!--                  </div>-->
+<!--                </div>-->
+                <p id="crawled-data">当前未爬取到数据，请点击按钮进行爬取</p>
+                <div id="crawl-div"></div>
+              </form>
+
+              <button type="submit" id="crawlbtn">爬取数据</button>
+            </div>
+            <div id="step-22">
+              <h2 class="StepTitle">Step 2 </h2>
+              <span class="section">分词结果</span>
+              <p id="parted-data">正在分词，请等待......</p>
+                <div id="part-div"></div>
+              <p></p>
+            </div>
+
+            <div id="step-33">
+              <h2 class="StepTitle">Step 3 </h2>
+              <span class="section">筛选三元组：在此步骤中，您可以对您不满意的结果进行筛选</span>
+              <p></p>
+            </div>
+
+            <div id="step-44">
+              <h2 class="StepTitle">Step 4</h2>
+              <span class="section">知识图谱</span>
+            </div>
+          </div>
+          <!-- End SmartWizard Content -->
+        </div>
       </div>
     </div>
   </div>
-</div>
+</body>
 {% endblock content %}
+{% block script %}
+<script type="text/javascript">
+
+    //获取爬取数据
+  function getCrawledWords() {
+    $.ajax({
+        url: 'http://' + self.location.host + '/tograph/crawl/',
+        type: 'GET',
+        data: {'time': crawl_time},
+        success: function (result) {
+            alert(result.data[0]);
+            $("#crawled-data").text('');
+            let str = "<p>";
+            for (i = 0; i < result.datalength; i ++) {
+              str += result.data[i]+"</p>"+"<p>";
+            }
+            let crawldiv = document.getElementById("crawl-div");
+            crawldiv.innerHTML=str;
+            crawl_time += 1;
+        },
+    });
+  }
+
+    //获取分词结果
+  function getPartWords() {
+    $.ajax({
+      url: 'http://' + self.location.host + '/tograph/part/',
+      type: 'GET',
+      data: {},
+      success: function (result) {
+          // alert(result.data[0]);
+          $("#parted-data").text('');
+          let str = "<p>";
+          for (i = 0; i < result.datalength; i ++) {
+            str += result.data[i]+"</p>"+"<p>";
+          }
+          let partdiv = document.getElementById("part-div");
+          partdiv.innerHTML=str;
+      },
+  });
+  }
+
+  $(document).ready(function(){
+    //用于记录爬取数据的次数，如果还未爬取，则无法进入下一步。
+    crawl_time = 0;
+    $('#wizard_verticle').smartWizard({
+        onLeaveStep:leaveAStepCallback,
+        onFinish:onFinishCallback
+    });
+
+
+    function leaveAStepCallback(obj, context){
+        // alert("Leaving step " + context.fromStep + " to go to step " + context.toStep);
+        if(context.fromStep==1){
+          getPartWords();
+        }
+        return validateSteps(context.fromStep); // return false to stay on step and true to continue navigation
+    }
+
+    function onFinishCallback(objs, context){
+        if(validateAllSteps()){
+            $('form').submit();
+        }
+    }
+
+    // Your Step validation logic
+    function validateSteps(stepnumber){
+        var isStepValid = true;
+        // validate step 1
+        if(stepnumber == 1){
+           if(crawl_time>0){
+             isStepValid = true;
+           }else {
+             isStepValid = false;
+             alert('请先进行数据爬取！');
+           }
+        }
+        return isStepValid;
+        // ...
+    }
+    function validateAllSteps(){
+        var isStepValid = true;
+        // all step validation logic
+        return isStepValid;
+    }
+});
+// 爬取的次数
+$('#crawlbtn').click(function () {
+  getCrawledWords();
+});
+
+
+</script>
+{% endblock script %}
