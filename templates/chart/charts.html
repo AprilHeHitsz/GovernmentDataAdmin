@@ -4,6 +4,75 @@
 <div class="my-3 my-md-5">
     <div class="container">
         <div class="row">
+            <div class="col-lg-6 col-xl-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>可选柱状图 <small></small></h2>
+                        <div class="col-sm-2" style="float: right">
+                            <select datatype="text" class="form-control form-control-line" name="property" id="x-choice">
+                                <option value='street' disabled>选择x轴</option>
+                                <option value='dispose_unit'>执行机构</option>
+                                <option value='street'>街道</option>
+                                <option value='community'>社区</option>
+                                <option value='main_type'>大类</option>
+                                <option value='sub_type'>小类</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-2" style="float: right">
+                            <select datatype="text" class="form-control form-control-line" name="property" id="y-choice">
+                                <option value='achieve' disabled>选择y轴</option>
+                                <option value='achieve'>完成情况</option>
+                                <option value='property'>事件类别</option>
+                            </select>
+                        </div>
+                        <input type="date" id="end-date" name="begin_date" style="width: 160px;height: 38px;float: right;font-size: 18px" value="2017-06-01" />
+                        <input type="date" id="begin-date" name="end_date" style="width: 160px;height: 38px;float: right;font-size: 18px" value="2017-06-01" />
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="card-body">
+                        <div id="bar" class="chart-container" style="height: 600px;"></div>
+                        <script>
+                            let now_date = new Date();
+                            console.log(now_date.toLocaleDateString())
+                            document.getElementById('end-date').value = now_date.toLocaleDateString().split('/').join('-');
+                            let bar_chart = echarts.init(
+                                document.getElementById('bar'), 'light', {renderer: 'canvas'}
+                            );
+                            bar_chart.setOption({{ bar_chart | safe}});
+                        </script>
+                        <script>
+                            let get_bar_data = function (){
+                                let x_choice = document.getElementById("x-choice").value;
+                                let y_choice = document.getElementById("y-choice").value;
+                                let begin_date = document.getElementById('begin-date').value;
+                                // console.log(begin_date);
+                                let end_date = document.getElementById('end-date').value;
+                                // console.log(end_date);
+                                $.ajax({
+                                    url: "data/bar",
+                                    type: "get",
+                                    dataType : "json",
+                                    data: {
+                                        'x_choice': x_choice,
+                                        'y_choice': y_choice,
+                                        'begin_date': begin_date,
+                                        'end_date': end_date,
+                                    },
+                                    success: (data) => {
+                                        console.log(data)
+                                        bar_chart.setOption(data);
+                                    }
+                                });
+                            }
+                            $("#x-choice").change(get_bar_data);
+                            $("#y-choice").change(get_bar_data);
+                            $("#begin-date").change(get_bar_data);
+                            $("#end-date").change(get_bar_data);
+                        </script>
+                    </div>
+                </div>
+            </div>
+
             <div class="col-lg-6 col-xl-6">
                 <div class="x_panel">
                     <div class="x_title">
@@ -49,50 +118,6 @@
                 </div>
             </div>
             <div class="col-lg-6 col-xl-6">
-                <div class="x_panel">
-                    <div class="x_title">
-                        <div class="col-sm-2">
-                            <h2 class="card-title">完成情况</h2>
-                        </div>
-                        <div class="col-sm-5"></div>
-                        <div class="col-sm-2">
-                            <div style="height: 8px"></div>
-                            <h6>选择街道</h6>
-                        </div>
-                        <div class="col-sm-3">
-                            <select datatype="text" class="form-control form-control-line " name="property" id="sun-street">
-                                {% for street in streets %}
-                                    <option value={{ street.name }}>{{ street.name }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="card-body">
-                        <div id="sunburst" class="chart-container" style="height: 500px;"></div>
-                        <script>
-                            let sunburst_chart = echarts.init(
-                                document.getElementById('sunburst'), 'walden', {renderer: 'canvas'}
-                            );
-                            sunburst_chart.setOption({{ sunburst_chart | safe}});
-                            $("#sun-street").change(function (){
-                                let sun_choice = document.getElementById("sun-street").value;
-                                $.ajax({
-                                    url: "data/sun",
-                                    type: "get",
-                                    dataType : "json",
-                                    data: {"sun-choice": sun_choice,},
-                                    success: (data) => {
-                                        console.log(data)
-                                        sunburst_chart.setOption(data);
-                                    }
-                                });
-                            });
-                        </script>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6 col-xl-12">
                 <div class="x_panel">
                     <div class="x_title">
                         <div class="col-sm-2">
@@ -163,32 +188,6 @@
                                     }
                                 });
                             });
-                        </script>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6 col-xl-12">
-                <div class="x_panel">
-                    <div class="x_title">
-                        <h2>各部门完成情况 <small></small></h2>
-                        <ul class="nav navbar-right panel_toolbox">
-                          <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                          </li>
-                          <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                          </li>
-                          <li><a class="close-link"><i class="fa fa-close"></i></a>
-                          </li>
-                        </ul>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="card-body">
-                        <div id="bar" class="chart-container" style="height: 600px;"></div>
-                        <script>
-                            let bar_chart = echarts.init(
-                                document.getElementById('bar'), 'light', {renderer: 'canvas'}
-                            );
-                            bar_chart.setOption({{ bar_chart | safe}});
                         </script>
                     </div>
                 </div>
