@@ -2,23 +2,23 @@
 {% load static %}
 {% block content %}
 <body>
-  <div class="page-title">
-    <div class="title_left">
-      <h3>Form Wizards</h3>
-    </div>
+<!--  <div class="page-title">-->
+<!--    <div class="title_left">-->
+<!--      <h3></h3>-->
+<!--    </div>-->
 
-    <div class="title_right">
-      <div class="col-md-5 col-sm-5  form-group row pull-right top_search">
-        <div class="input-group">
-          <input type="text" class="form-control" placeholder="Search for...">
-          <span class="input-group-btn">
-                    <button class="btn btn-secondary" type="button">Go!</button>
-                </span>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="clearfix"></div>
+<!--    <div class="title_right">-->
+<!--      <div class="col-md-5 col-sm-5  form-group row pull-right top_search">-->
+<!--        <div class="input-group">-->
+<!--          <input type="text" class="form-control" placeholder="Search for...">-->
+<!--          <span class="input-group-btn">-->
+<!--                    <button class="btn btn-secondary" type="button">Go!</button>-->
+<!--                </span>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--  <div class="clearfix"></div>-->
 
   <div class="row">
 
@@ -26,7 +26,7 @@
       <div class="x_panel">
 
         <div class="x_title">
-          <h2>Form Wizards <small>Sessions</small></h2>
+          <h2>知识图谱生成</h2>
           <ul class="nav navbar-right panel_toolbox">
             <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
             </li>
@@ -49,7 +49,7 @@
 
           <!-- Tabs -->
           <div id="wizard_verticle" class="form_wizard wizard_verticle">
-            <ul class="list-unstyled wizard_steps">
+            <ul class="list-unstyled wizard_steps" style="width: -moz-fit-content">
               <li>
                 <a href="#step-11">
                   <span class="step_no">1</span>
@@ -72,78 +72,70 @@
               </li>
             </ul>
 
-            <div id="step-11">
+            <div id="step-11" style="height: 800px ">
               <h2 class="StepTitle">Step 1</h2>
-              <form class="form-horizontal form-label-left">
+              </span>
+<!--               <form method="get" >-->
+                <div class="input-group"  style="float: right; width: 20%">
+                  <input id="data_num" type="text" class="form-control" placeholder="请输入数据条数..." style="font-size: 11px">
+                  <span class="input-group-btn">
+                  <button type="submit" id="crawlbtn" class="btn btn-secondary" style="font-size: 8px">爬取数据</button>
+                  </span>
+                </div>
+<!--              <button type="submit" id="crawlbtn" class="btn btn-secondary" style="float: right">爬取数据</button>-->
+                <form class="form-horizontal form-label-left">
+                  <span class="section" style="width: 90%">爬取数据</span>
 
-                <span class="section">爬取数据</span>
-
-<!--                <div class="form-group row">-->
-<!--                  <label class="col-form-label col-md-3 col-sm-3 label-align" form="first-name">First Name <span class="required">*</span>-->
-<!--                  </label>-->
-<!--                  <div class="col-md-6 col-sm-6">-->
-<!--                    <input type="text" id="first-name2" required="required" class="form-control">-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--                <div class="form-group row">-->
-<!--                  <label class="col-form-label col-md-3 col-sm-3 label-align" form="last-name">Last Name <span class="required">*</span>-->
-<!--                  </label>-->
-<!--                  <div class="col-md-6 col-sm-6">-->
-<!--                    <input type="text" id="last-name2" name="last-name" required="required" class="form-control">-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--                <div class="form-group row">-->
-<!--                  <label form="middle-name" class="col-form-label col-md-3 col-sm-3 label-align">Middle Name / Initial</label>-->
-<!--                  <div class="col-md-6 col-sm-6">-->
-<!--                    <input id="middle-name2" class="form-control " type="text" name="middle-name">-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--                <div class="form-group row">-->
-<!--                  <label class="col-form-label col-md-3 col-sm-3 label-align">Gender</label>-->
-<!--                  <div class="col-md-6 col-sm-6">-->
-<!--                    <div id="gender2" class="btn-group" data-toggle="buttons">-->
-<!--                      <label class="btn btn-secondary" data-toggle-class="btn-primary" data-toggle-passive-class="btn-secondary">-->
-<!--                        <input type="radio" name="gender" value="male" class="join-btn"> &nbsp; Male &nbsp;-->
-<!--                      </label>-->
-<!--                      <label class="btn btn-primary" data-toggle-class="btn-primary" data-toggle-passive-class="btn-secondary">-->
-<!--                        <input type="radio" name="gender" value="female" class="join-btn" checked=""> Female-->
-<!--                      </label>-->
-<!--                    </div>-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--                <div class="form-group row">-->
-<!--                  <label class="col-form-label col-md-3 col-sm-3 label-align">Date Of Birth <span class="required">*</span>-->
-<!--                  </label>-->
-<!--                  <div class="col-md-6 col-sm-6">-->
-<!--                    <input id="birthday2" class="date-picker form-control" required="required" type="text">-->
-<!--                  </div>-->
-<!--                </div>-->
-                <p id="crawled-data">当前未爬取到数据，请点击按钮进行爬取</p>
-                <div id="crawl-div"></div>
-              </form>
-
-              <button type="submit" id="crawlbtn">爬取数据</button>
+                  <p id="crawled-data">当前未爬取到数据，请输入您想爬取的数据条数并点击按钮进行爬取</p>
+                  <ul class="list-unstyled msg_list" id="crawl-ul">
+                  </ul>
+                  <div id="crawl-div" ></div>
+                </form>
+<!--               </form>-->
             </div>
-            <div id="step-22">
+            <div id="step-22"style="height: 800px ">
               <h2 class="StepTitle">Step 2 </h2>
               <span class="section">分词结果</span>
               <p id="parted-data">正在分词，请等待......</p>
-                <div id="part-div"></div>
+                <div id="part-div" ></div>
               <p></p>
             </div>
 
-            <div id="step-33">
+            <div id="step-33" style="height: 800px">
               <h2 class="StepTitle">Step 3 </h2>
               <span class="section">筛选三元组：在此步骤中，您可以对您不满意的结果进行筛选</span>
-              <p></p>
+              <div class="table-responsive">
+                      <table class="table table-striped jambo_table bulk_action">
+                        <thead>
+                          <tr class="headings">
+                            <th>
+                              <input type="checkbox" id="check-all" class="flat">
+                            </th>
+                            <th class="column-title">时间 </th>
+                            <th class="column-title">地点 </th>
+                            <th class="column-title">部门 </th>
+                            <th class="column-title">性质 </th>
+                            <th class="column-title">事件 </th>
+                            </th>
+                            <th class="bulk-actions" colspan="7">
+                              <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody id="tbody">
+                        </tbody>
+                      </table>
+                    </div>
             </div>
 
-            <div id="step-44">
+            <div id="step-44"  style="height: 800px">
               <h2 class="StepTitle">Step 4</h2>
               <span class="section">知识图谱</span>
+               <div class="x_content">
+                        <div id="graph" class="container" style="height:750px;width: 1000%"></div>
+                </div>
             </div>
           </div>
-          <!-- End SmartWizard Content -->
         </div>
       </div>
     </div>
@@ -151,46 +143,119 @@
 </body>
 {% endblock content %}
 {% block script %}
+<script type="text/javascript"
+        src="http://apps.bdimg.com/libs/jquery/1.9.0/jquery.min.js"></script>
 <script type="text/javascript">
-
-    //获取爬取数据
-  function getCrawledWords() {
+  data_num = 0;
+  //获取爬取数据
+function getCrawledWords() {
+  if(strIsNum(data_num)) {
     $.ajax({
-        url: 'http://' + self.location.host + '/tograph/crawl/',
-        type: 'GET',
-        data: {'time': crawl_time},
-        success: function (result) {
-            alert(result.data[0]);
-            $("#crawled-data").text('');
-            let str = "<p>";
-            for (i = 0; i < result.datalength; i ++) {
-              str += result.data[i]+"</p>"+"<p>";
-            }
-            let crawldiv = document.getElementById("crawl-div");
-            crawldiv.innerHTML=str;
-            crawl_time += 1;
-        },
-    });
-  }
-
-    //获取分词结果
-  function getPartWords() {
-    $.ajax({
-      url: 'http://' + self.location.host + '/tograph/part/',
+      url: 'http://' + self.location.host + '/tograph/crawl/',
       type: 'GET',
-      data: {},
+      data: {'data_num': data_num},
       success: function (result) {
-          // alert(result.data[0]);
-          $("#parted-data").text('');
-          let str = "<p>";
-          for (i = 0; i < result.datalength; i ++) {
-            str += result.data[i]+"</p>"+"<p>";
-          }
-          let partdiv = document.getElementById("part-div");
-          partdiv.innerHTML=str;
+        // alert(result.data[0]);
+        $("#crawled-data").text('');
+        let str = "";
+        for (i = 0; i < result.datalength; i++) {
+          str += "<li>\n" +
+                  "    <a>\n" +
+                  "      <span>\n" + result.data[i] + "</span>\n" +
+                  "    </a>\n" +
+                  "  </li>";
+        }
+        let crawldiv = document.getElementById("crawl-ul");
+        crawldiv.innerHTML = str;
+        crawl_time += 1;
       },
-  });
+    });
+  }else {
+    alert("您输入的不是整数，请输入正确格式 :)")
   }
+}
+//判断输入是否是整数
+function strIsNum(str){
+    // var regPos = /^\d+(\.\d+)?$/; //判断数字是否是整数或小数
+  let reg = /^\+?[1-9][0-9]*$/; //判断数字是否是整数
+  let b = reg.test(str);
+  if(b){
+      return true;
+  }else{
+      return false;
+  }
+}
+    //获取分析结果
+function getTable() {
+  $.ajax({
+    url: 'http://' + self.location.host + '/tograph/table/',
+    type: 'GET',
+    data: {'data_num': data_num},
+    success: function (result) {
+        // alert(result.data[0]);
+        let str = "";
+        for (let i = 0; i < result.datalength; i ++) {
+          if(i%2==0){
+            str += "<tr class=\"even pointer\">\n";
+          }else {
+            str += "<tr class=\"odd pointer\">\n";
+          }
+          str += "  <td class=\"a-center \">\n" +
+                  "    <input type=\"checkbox\" class=\"flat\" name=\"table_records\">\n" +
+                      "  </td>\n";
+          for (let j = 0; j<5; j++){
+            str += '<td class="">' + result.data[i][j]+ "</td>";
+          }
+          str += "</tr>";
+        }
+        let partdiv = document.getElementById("tbody");
+        partdiv.innerHTML=str;
+    },
+});
+}
+    //获取分词结果
+function getPartWords() {
+  $.ajax({
+    url: 'http://' + self.location.host + '/tograph/part/',
+    type: 'GET',
+    data: {'data_num': data_num},
+    success: function (result) {
+        $("#parted-data").text('');
+        let str = "";
+        for(let j = 0; j<result.datalength; j++){
+          str += "<p>";
+          for (let i = 0; i < result.data[j].length; i ++) {
+          str += "<span class=\"badge badge-secondary\">"+result.data[j][i]+" </span>\n";
+          }
+          str += "<\p>";
+        }
+        let partdiv = document.getElementById("part-div");
+        partdiv.innerHTML=str;
+    },
+  });
+}
+
+// function getGraph() {
+//   $.ajax({
+//     url: 'http://' + self.location.host + '/tograph/to_graph/',
+//     type: 'GET',
+//     data: {},
+//     success: function (result) {
+//       alert(graph)
+//        getAGraph();
+//     },
+//   });
+//
+// }
+  // 获取关系图
+function getGraph() {
+   let graph_chart = echarts.init(
+      document.getElementById('graph'), 'white', {renderer: 'canvas'}
+    );
+    graph_chart.setOption({{ graph | safe}});
+}
+
+
 
   $(document).ready(function(){
     //用于记录爬取数据的次数，如果还未爬取，则无法进入下一步。
@@ -206,6 +271,12 @@
         if(context.fromStep==1){
           getPartWords();
         }
+        if(context.fromStep==2){
+          getTable();
+        }
+        if(context.fromStep==3){
+          getGraph();
+        }
         return validateSteps(context.fromStep); // return false to stay on step and true to continue navigation
     }
 
@@ -217,8 +288,8 @@
 
     // Your Step validation logic
     function validateSteps(stepnumber){
-        var isStepValid = true;
-        // validate step 1
+      let isStepValid = true;
+      // validate step 1
         if(stepnumber == 1){
            if(crawl_time>0){
              isStepValid = true;
@@ -231,16 +302,16 @@
         // ...
     }
     function validateAllSteps(){
-        var isStepValid = true;
-        // all step validation logic
+      let isStepValid = true;
+      // all step validation logic
         return isStepValid;
     }
 });
-// 爬取的次数
+// 爬取按钮
 $('#crawlbtn').click(function () {
-  getCrawledWords();
+    data_num = document.getElementById("data_num").value
+   getCrawledWords();
 });
-
 
 </script>
 {% endblock script %}
