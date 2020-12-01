@@ -1,0 +1,318 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<body>
+<!--  <div class="page-title">-->
+<!--    <div class="title_left">-->
+<!--      <h3></h3>-->
+<!--    </div>-->
+
+<!--    <div class="title_right">-->
+<!--      <div class="col-md-5 col-sm-5  form-group row pull-right top_search">-->
+<!--        <div class="input-group">-->
+<!--          <input type="text" class="form-control" placeholder="Search for...">-->
+<!--          <span class="input-group-btn">-->
+<!--                    <button class="btn btn-secondary" type="button">Go!</button>-->
+<!--                </span>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--  <div class="clearfix"></div>-->
+
+  <div class="row">
+
+    <div class="col-md-12 col-sm-12 ">
+      <div class="x_panel">
+
+        <div class="x_title">
+          <h2>知识图谱生成</h2>
+          <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="#">Settings 1</a>
+                </li>
+                <li><a href="#">Settings 2</a>
+                </li>
+              </ul>
+            </li>
+            <li><a class="close-link"><i class="fa fa-close"></i></a>
+            </li>
+          </ul>
+          <div class="clearfix"></div>
+        </div>
+
+        <div class="x_content">
+
+          <!-- Tabs -->
+          <div id="wizard_verticle" class="form_wizard wizard_verticle">
+            <ul class="list-unstyled wizard_steps" style="width: -moz-fit-content">
+              <li>
+                <a href="#step-11">
+                  <span class="step_no">1</span>
+                </a>
+              </li>
+              <li>
+                <a href="#step-22">
+                  <span class="step_no">2</span>
+                </a>
+              </li>
+              <li>
+                <a href="#step-33">
+                  <span class="step_no">3</span>
+                </a>
+              </li>
+              <li>
+                <a href="#step-44">
+                  <span class="step_no">4</span>
+                </a>
+              </li>
+            </ul>
+
+            <div id="step-11" style="height: 800px;width: 100%">
+              <h2 class="StepTitle">Step 1</h2>
+              </span>
+<!--               <form method="get" >-->
+                <div class="input-group"  style="float: right; width: 20%">
+                  <input id="data_num" type="text" class="form-control" placeholder="请输入数据条数..." style="font-size: 11px">
+                  <span class="input-group-btn">
+                  <button type="submit" id="crawlbtn" class="btn btn-secondary" style="font-size: 8px">爬取数据</button>
+                  </span>
+                </div>
+<!--              <button type="submit" id="crawlbtn" class="btn btn-secondary" style="float: right">爬取数据</button>-->
+                <form class="form-horizontal form-label-left">
+                  <span class="section" style="width: 90%">爬取数据</span>
+
+                  <p id="crawled-data">当前未爬取到数据，请输入您想爬取的数据条数并点击按钮进行爬取</p>
+                  <ul class="list-unstyled msg_list" id="crawl-ul">
+                  </ul>
+                  <div id="crawl-div" ></div>
+                </form>
+<!--               </form>-->
+            </div>
+            <div id="step-22"style="height: 700px ">
+              <h2 class="StepTitle">Step 2 </h2>
+              <span class="section">分词结果</span>
+              <p id="parted-data">正在分词，请等待......</p>
+                <div id="part-div" ></div>
+              <p></p>
+            </div>
+
+            <div id="step-33" style="height: 800px">
+              <h2 class="StepTitle">Step 3 </h2>
+              <span class="section">筛选三元组：在此步骤中，您可以对您不满意的结果进行筛选</span>
+              <div class="table-responsive">
+                      <table class="table table-striped jambo_table bulk_action">
+                        <thead>
+                          <tr class="headings">
+                            <th>
+                              <input type="checkbox" id="check-all" class="flat">
+                            </th>
+                            <th class="column-title">时间 </th>
+                            <th class="column-title">地点 </th>
+                            <th class="column-title">部门 </th>
+                            <th class="column-title">性质 </th>
+                            <th class="column-title">事件 </th>
+                            </th>
+                            <th class="bulk-actions" colspan="7">
+                              <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody id="tbody">
+                        </tbody>
+                      </table>
+                    </div>
+            </div>
+
+            <div id="step-44"  style="height: 800px">
+              <h2 class="StepTitle">Step 4</h2>
+              <span class="section">知识图谱</span>
+               <div class="x_content">
+                        <div id="graph" class="container" style="height:750px;width: 1200%"></div>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+{% endblock content %}
+{% block script %}
+<script type="text/javascript"
+        src="http://apps.bdimg.com/libs/jquery/1.9.0/jquery.min.js"></script>
+<script type="text/javascript">
+  data_num = 0;
+  //获取爬取数据
+function getCrawledWords() {
+  if(strIsNum(data_num)) {
+    $.ajax({
+      url: 'http://' + self.location.host + '/tograph/crawl/',
+      type: 'GET',
+      data: {'data_num': data_num},
+      success: function (result) {
+        // alert(result.data[0]);
+        $("#crawled-data").text('');
+        let str = "";
+        for (i = 0; i < result.datalength; i++) {
+          str += "<li>\n" +
+                  "    <a>\n" +
+                  "      <span>\n" + result.data[i] + "</span>\n" +
+                  "    </a>\n" +
+                  "  </li>";
+        }
+        let crawldiv = document.getElementById("crawl-ul");
+        crawldiv.innerHTML = str;
+        crawl_time += 1;
+      },
+    });
+  }else {
+    alert("您输入的不是整数，请输入正确格式 :)")
+  }
+}
+//判断输入是否是整数
+function strIsNum(str){
+    // var regPos = /^\d+(\.\d+)?$/; //判断数字是否是整数或小数
+  let reg = /^\+?[1-9][0-9]*$/; //判断数字是否是整数
+  let b = reg.test(str);
+  if(b){
+      return true;
+  }else{
+      return false;
+  }
+}
+    //获取分析结果
+function getTable() {
+  $.ajax({
+    url: 'http://' + self.location.host + '/tograph/table/',
+    type: 'GET',
+    data: {'data_num': data_num},
+    success: function (result) {
+        // alert(result.data[0]);
+        let str = "";
+        for (let i = 0; i < result.datalength; i ++) {
+          if(i%2==0){
+            str += "<tr class=\"even pointer\">\n";
+          }else {
+            str += "<tr class=\"odd pointer\">\n";
+          }
+          str += "  <td class=\"a-center \">\n" +
+                  "    <input type=\"checkbox\" class=\"flat\" name=\"table_records\">\n" +
+                      "  </td>\n";
+          for (let j = 0; j<5; j++){
+            str += '<td class="">' + result.data[i][j]+ "</td>";
+          }
+          str += "</tr>";
+        }
+        let partdiv = document.getElementById("tbody");
+        partdiv.innerHTML=str;
+    },
+});
+}
+    //获取分词结果
+function getPartWords() {
+  $.ajax({
+    url: 'http://' + self.location.host + '/tograph/part/',
+    type: 'GET',
+    data: {'data_num': data_num},
+    success: function (result) {
+        $("#parted-data").text('');
+        let str = "";
+        for(let j = 0; j<result.datalength; j++){
+          str += "<p>";
+          for (let i = 0; i < result.data[j].length; i ++) {
+          str += "<span class=\"badge badge-secondary\">"+result.data[j][i]+" </span>\n";
+          }
+          str += "<\p>";
+        }
+        let partdiv = document.getElementById("part-div");
+        partdiv.innerHTML=str;
+    },
+  });
+}
+
+// function getGraph() {
+//   $.ajax({
+//     url: 'http://' + self.location.host + '/tograph/to_graph/',
+//     type: 'GET',
+//     data: {},
+//     success: function (result) {
+//       alert(graph)
+//        getAGraph();
+//     },
+//   });
+//
+// }
+  // 获取关系图
+function getGraph() {
+   let graph_chart = echarts.init(
+      document.getElementById('graph'), 'white', {renderer: 'canvas'}
+    );
+    graph_chart.setOption({{ graph | safe}});
+}
+
+
+
+  $(document).ready(function(){
+    //用于记录爬取数据的次数，如果还未爬取，则无法进入下一步。
+    crawl_time = 0;
+    $('#wizard_verticle').smartWizard({
+        onLeaveStep:leaveAStepCallback,
+        onFinish:onFinishCallback,
+        labelFinish:''
+    });
+
+
+    function leaveAStepCallback(obj, context){
+        // alert("Leaving step " + context.fromStep + " to go to step " + context.toStep);
+        if(context.fromStep==1){
+          getPartWords();
+        }
+        if(context.fromStep==2){
+          getTable();
+        }
+        if(context.fromStep==3){
+          getGraph();
+        }
+        return validateSteps(context.fromStep); // return false to stay on step and true to continue navigation
+    }
+
+    function onFinishCallback(objs, context){
+        if(validateAllSteps()){
+            $('form').submit();
+        }
+    }
+
+    // Your Step validation logic
+    function validateSteps(stepnumber){
+      let isStepValid = true;
+      // validate step 1
+        if(stepnumber == 1){
+           if(crawl_time>0){
+             isStepValid = true;
+           }else {
+             isStepValid = false;
+             alert('请先进行数据爬取！');
+           }
+        }
+        return isStepValid;
+        // ...
+    }
+    function validateAllSteps(){
+      let isStepValid = true;
+      // all step validation logic
+        return isStepValid;
+    }
+});
+// 爬取按钮
+$('#crawlbtn').click(function () {
+    data_num = document.getElementById("data_num").value
+   getCrawledWords();
+});
+
+</script>
+{% endblock script %}

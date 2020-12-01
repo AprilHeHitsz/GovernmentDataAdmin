@@ -35,6 +35,7 @@ urlpatterns = [
     path('notice/', include('notice.urls', namespace='notice')),
     path('webinfo/', include('webinfo.urls', namespace='webinfo')),
     path('captcha/', include('captcha.urls')),
+    path('tograph/', include('tograph.urls', namespace='tograph')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
