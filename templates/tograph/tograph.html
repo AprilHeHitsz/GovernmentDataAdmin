@@ -72,7 +72,7 @@
               </li>
             </ul>
 
-            <div id="step-11" style="height: 800px ">
+            <div id="step-11" style="height: 800px;width: 100%">
               <h2 class="StepTitle">Step 1</h2>
               </span>
 <!--               <form method="get" >-->
@@ -93,7 +93,7 @@
                 </form>
 <!--               </form>-->
             </div>
-            <div id="step-22"style="height: 800px ">
+            <div id="step-22"style="height: 700px ">
               <h2 class="StepTitle">Step 2 </h2>
               <span class="section">分词结果</span>
               <p id="parted-data">正在分词，请等待......</p>
@@ -132,7 +132,7 @@
               <h2 class="StepTitle">Step 4</h2>
               <span class="section">知识图谱</span>
                <div class="x_content">
-                        <div id="graph" class="container" style="height:750px;width: 1000%"></div>
+                        <div id="graph" class="container" style="height:750px;width: 1200%"></div>
                 </div>
             </div>
           </div>
@@ -262,7 +262,8 @@ function getGraph() {
     crawl_time = 0;
     $('#wizard_verticle').smartWizard({
         onLeaveStep:leaveAStepCallback,
-        onFinish:onFinishCallback
+        onFinish:onFinishCallback,
+        labelFinish:''
     });
 
 
